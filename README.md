@@ -1,9 +1,9 @@
 # chabok-demo-map
 Chabok Demo Map Tracker
 
-##Getting Started
+## Getting Started
 Installation
-```$xslt
+```bash
 npm install
 ```
 You’ll need to have Node >= 6 on your machine. You can use nvm to easily switch Node versions between different projects.
@@ -13,7 +13,7 @@ You’ll need to have Node >= 6 on your machine. You can use nvm to easily switc
 
 In the project directory, you can run:
 
-```$xslt
+```bash
 npm start
 ```
 Runs the app in the development mode.
@@ -23,7 +23,7 @@ The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 
-```$xslt
+```bash
 npm build
 ```
 Builds the app for production to the build folder.

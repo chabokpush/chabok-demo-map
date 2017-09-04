@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "google-map-react": "^0.24.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-lottie": "^0.2.1",
+    "react-motion": "^0.5.1",
+    "react-motion-ui-pack": "^0.10.3",
+    "react-number-easing": "^0.0.4",
     "react-scripts": "1.0.12"
   },
   "scripts": {

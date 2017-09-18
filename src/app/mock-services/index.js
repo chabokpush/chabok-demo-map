@@ -39,7 +39,7 @@ function generateRandomPoint(center, radius) {
 }
 
 export function getLocation(cb) {
-    const geo_array = generateRandomPoints({'lat': 35.789743, 'lng': 51.399843}, 250, 200);
+    const geo_array = generateRandomPoints({'lat': 35.759172, 'lng': 51.400824}, 250, 200);
     return setTimeout(_ => {
         cb(geo_array[getRandom(0, 100)]);
     }, 100)

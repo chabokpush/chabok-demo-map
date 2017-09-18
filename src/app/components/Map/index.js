@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
 import Transition from 'react-motion-ui-pack';
-import chabokpush from 'chabokpush';
 
 import {spring} from 'react-motion'
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
+var _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
+
 
 const AnyReactComponent = ({status, key}) => (
     <Transition
@@ -24,12 +25,12 @@ const AnyReactComponent = ({status, key}) => (
                 width: 15,
                 height: 15,
                 borderRadius: 15,
-                background: status === 'winner' ? 'red' : status === 'digging' ? '#efb429' : '#007AFF',
+                background: `#${_.generate(status)}`,
                 padding: 4
             }}>
             <a title={status} href="#">
                 <img
-                    src={status === 'digging' ? require('../../assets/images/dig.svg') : require('../../assets/images/logo.svg')}/>
+                    src={require('../../assets/images/logo.svg')}/>
             </a>
         </div>
     </Transition>
@@ -62,42 +63,6 @@ export default class Map extends Component {
         zoom: 17
     };
 
-    constructor() {
-        super();
-        this.chabok();
-    }
-
-
-    chabok() {
-        // const options = {
-        //     appId: 'chabok-demo',
-        //     apiKey: '779e1bf80d61d8750ca2ee8fb05dfd43daa5b092',
-        //     username: 'chabokdemo',
-        //     password: 'chabokdemo',
-        //     devMode: false
-        // };
-        const options = {
-            appId: 'adp-nms-push',
-            apiKey: 'c89cd1703981e6efe5afb8d28a5f4ac418f29e2b',
-            username: 'adp',
-            password: 'test',
-            devMode: true
-        };
-        const push = new chabokpush.Chabok(options)
-
-        push.on('registered', deviceId => console.log('DeviceId ', deviceId))
-        push.on('connected', _ => {
-            console.log('Connected')
-            push.enableDeliveryForEvent('geo')
-            push.on('geo', geoEvent => console.log('Geo Event ', geoEvent))
-        });
-        push.on('message', msg => console.log('Message ', msg))
-
-        push.register('989120032217')
-
-
-    }
-
     render() {
         const {markers, zoom} = this.props;
         return (
@@ -123,7 +88,7 @@ export default class Map extends Component {
                         key={id}
                         lat={val.lat}
                         lng={val.lng}
-                        status={val.status}
+                        status={val.channel}
                     />)}
                 </GoogleMapReact>
             </div>

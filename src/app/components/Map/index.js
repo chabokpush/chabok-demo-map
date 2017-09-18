@@ -62,13 +62,13 @@ export default class Map extends Component {
         zoom: 17
     };
 
-    constructor(){
+    constructor() {
         super();
         this.chabok();
     }
 
 
-    chabok(){
+    chabok() {
         // const options = {
         //     appId: 'chabok-demo',
         //     apiKey: '779e1bf80d61d8750ca2ee8fb05dfd43daa5b092',
@@ -86,14 +86,15 @@ export default class Map extends Component {
         const push = new chabokpush.Chabok(options)
 
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
-        push.on('connected', _ => console.log('Connected'))
+        push.on('connected', _ => {
+            console.log('Connected')
+            push.enableDeliveryForEvent('geo')
+            push.on('geo', geoEvent => console.log('Geo Event ', geoEvent))
+        });
         push.on('message', msg => console.log('Message ', msg))
 
         push.register('989120032217')
 
-        push.enableDeliveryForEvent('geo')
-
-        push.on('geo', geoEvent => console.log('Geo Event ', geoEvent))
 
     }
 

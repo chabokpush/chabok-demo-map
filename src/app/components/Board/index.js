@@ -18,25 +18,21 @@ export default class Header extends Component {
                             autoplay: true,
                             animationData: animationData
                         }}
-                        height={90}
-                        width={90}
+                        height={50}
+                        width={50}
                     />
                 </div>
                 <ul className="inline-list">
-                    <li>{data.seeking}
-                        <h3>تعداد کاپیتان ها</h3>
-                    </li>
-                    <li>
-                        {data.idle}
-                        <h3>تعداد کاپیتان های بیکار</h3>
+                    <li>{data.captain}
+                        <span> تعداد کاپیتان ها</span>
                     </li>
                     <li>
                         {data.digging}
-                        <h3>تعداد حفاری ها</h3>
+                        <span> تعداد حفاری ها</span>
                     </li>
                     <li>
                         {data.winner}
-                        <h3>گنچ های پیدا شده</h3>
+                        <span> گنچ های پیدا شده</span>
                     </li>
 
                 </ul>
@@ -53,7 +49,7 @@ const STYLE = {
         zIndex: 100,
         background: '#fff',
         width: '100%',
-        height: 100,
+        height: 60,
         top: 0,
         left: 0,
         borderRadius: 5,

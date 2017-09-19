@@ -19,5 +19,10 @@
   "theme_color": "#177AFB",
   "background_color": "#ffffff",
   "orientation": "portrait-primary",
+  "permissions": [
+    "webRequest",
+    "background",
+    "geolocation"
+  ],
   "author": "ADPdigital"
 }

@@ -11,7 +11,7 @@ class App extends Component {
         this.state = {
             markers: [],
             stats: {
-                seeking: 0,
+                captain: 0,
                 idle: 0,
                 digging: 0,
                 winner: 0,
@@ -63,6 +63,11 @@ class App extends Component {
         } else {
             arr.push(obj)
         }
+        this.setState({
+            stats: Object.assign(this.state.stats, {
+                captain: arr.length
+            })
+        });
         return arr;
     }
 

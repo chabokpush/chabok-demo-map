@@ -5106,6 +5106,12 @@ react-error-overlay@^2.0.0:
     settle-promise "1.0.0"
     source-map "0.5.6"
 
+react-geolocated@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-geolocated/-/react-geolocated-2.0.0.tgz#77fc90818c66f80172c0028269f063494f504ae7"
+  dependencies:
+    prop-types "^15.5.8"
+
 react-lottie@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/react-lottie/-/react-lottie-0.2.1.tgz#c9f5cc724cc4ab859b41268ce1d034fbf3e366b7"

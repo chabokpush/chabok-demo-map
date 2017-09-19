@@ -3,7 +3,9 @@ import GoogleMapReact from 'google-map-react';
 import Transition from 'react-motion-ui-pack';
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
-var _ = require('string-to-color');
+import {geolocated} from 'react-geolocated';
+
+const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
@@ -52,8 +54,7 @@ const CompanyLocation = () => (
     </div>
 );
 
-
-export default class Map extends Component {
+class Map extends Component {
     static defaultProps = {
         center: {
             lat: 35.759172,
@@ -79,8 +80,8 @@ export default class Map extends Component {
                 >
                     <CompanyLocation
                         key={'company'}
-                        lat={35.759172}
-                        lng={51.400824}
+                        lat={this.props.coords ? this.props.coords.latitude : center.lat}
+                        lng={this.props.coords ? this.props.coords.longitude : center.lng}
                     />
 
                     {markers.map((val, id) => <AnyReactComponent
@@ -94,3 +95,10 @@ export default class Map extends Component {
         );
     }
 }
+
+export default geolocated({
+    positionOptions: {
+        enableHighAccuracy: true,
+    },
+    userDecisionTimeout: 5000
+})(Map);

@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
 import Transition from 'react-motion-ui-pack';
-
-import {spring} from 'react-motion'
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
 var _ = require('string-to-color');
@@ -28,8 +26,9 @@ const AnyReactComponent = ({status, key}) => (
                 background: `#${_.generate(status)}`,
                 padding: 4
             }}>
-            <a title={status} href="#">
+            <a title={status} href="!#">
                 <img
+                    alt={status}
                     src={require('../../assets/images/logo.svg')}/>
             </a>
         </div>
@@ -64,7 +63,7 @@ export default class Map extends Component {
     };
 
     render() {
-        const {markers, zoom} = this.props;
+        const {markers, zoom, center} = this.props;
         return (
             <div className="map">
                 <GoogleMapReact
@@ -75,8 +74,8 @@ export default class Map extends Component {
                             styles: [{stylers: [{'saturation': -100}, {'gamma': 0.8}, {'lightness': 4}, {'visibility': 'on'}]}]
                         }
                     }}
-                    defaultCenter={this.props.center}
-                    defaultZoom={this.props.zoom}
+                    defaultCenter={center}
+                    defaultZoom={zoom}
                 >
                     <CompanyLocation
                         key={'company'}

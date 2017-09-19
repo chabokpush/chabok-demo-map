@@ -1,15 +1,23 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "dir": "rtl",
+  "lang": "fa",
+  "short_name": "chabok map",
+  "name": "chabok map",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "192x192",
       "type": "image/png"
+    },
+    {
+      "src": "logo.svg",
+      "sizes": "72x72"
     }
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#177AFB",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "author": "ADPdigital"
 }

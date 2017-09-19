@@ -2,14 +2,12 @@ import React, {Component} from 'react';
 import '../assets/css/App.css';
 import Map from '../components/Map'
 import Board from '../components/Board'
-import {getLocation} from '../mock-services';
 import chabokpush from 'chabokpush';
 
 class App extends Component {
 
     constructor() {
         super();
-        this.chabok();
         this.state = {
             markers: [],
             stats: {
@@ -61,9 +59,7 @@ class App extends Component {
         const arr = [].concat(array);
         const filterResult = arr.filter(val => obj.channel && val.channel === obj.channel);
         if (filterResult.length) {
-            arr.map((val, index) => {
-                val.channel === obj.channel ? arr[index] = Object.assign(val, obj) : ''
-            });
+            arr.map((val, index) => val.channel === obj.channel ? arr[index] = Object.assign(val, obj) : '');
         } else {
             arr.push(obj)
         }
@@ -71,9 +67,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        setInterval(_ => getLocation(location => {
-
-        }), 250)
+        this.chabok();
     }
 
     render() {

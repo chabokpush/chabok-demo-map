@@ -13,15 +13,7 @@ const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 const MarkerComponent = ({status, key, channel}) => (
     <div>
-        {status !== 'walking' ? <Lottie
-            key={key}
-            options={{
-                autoplay: true,
-                animationData: status === "win" ? trophy : typing,
-            }}
-            height={70}
-            width={70}
-        /> : <div
+            <div
             key={key}
             style={{
                 width: 15,
@@ -35,8 +27,7 @@ const MarkerComponent = ({status, key, channel}) => (
                     alt={channel}
                     src={require('../../assets/images/logo.svg')}/>
             </a>
-        </div>}
-
+        </div>
     </div>
 );
 

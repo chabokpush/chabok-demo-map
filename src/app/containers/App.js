@@ -30,6 +30,11 @@ export default class App extends Component {
         nextState.markers.length ? Storage.set('geo', this.cloneDeep(nextState.markers)) : null;
     }
 
+    generateRandomStatus(){
+        const statusArr=['walking','typing', 'sent', 'kolang', 'win'];
+        return statusArr[Math.floor(Math.random() * statusArr.length)]
+    }
+
     chabok() {
         const options = window.location.search.slice(1).split('=')[0] === 'dev' ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(options)
@@ -42,7 +47,9 @@ export default class App extends Component {
                 console.log('Geo Event ', geoEvent);
                 this.setState({
                     // stats: Object.assign({}, this.state.stats, {[location.status]: ++this.state.stats[location.status]}),
-                    markers: this.upsetArray(this.state.markers, Object.assign(geoEvent))
+                    markers: this.upsetArray(this.state.markers, Object.assign(geoEvent, {
+                        status: this.generateRandomStatus()
+                    }))
                 })
             })
         });

@@ -11,28 +11,26 @@ export default class Header extends Component {
                 <div style={{
                     position: 'absolute',
                     left: 10,
-                    top:5
+                    top: 5
                 }}>
-                    <Lottie
-                        options={{
-                            autoplay: true,
-                            animationData: animationData
-                        }}
-                        height={50}
-                        width={50}
-                    />
+                    <img src={require('../../../logo.svg')} alt=""/>
+
                 </div>
-                <ul className="inline-list">
-                    <li>{data.captain}
-                        <span> تعداد کاپیتان ها</span>
+                <ul className="inline-list stats">
+                    <li>
+                        <img src={require('../../assets/images/captain.svg')} alt=""/>
+                        {data.captain}
+                        <span>کاپیتان</span>
                     </li>
                     <li>
+                        <img src={require('../../assets/images/kolang.svg')} alt=""/>
                         {data.digging}
-                        <span> تعداد حفاری ها</span>
+                        <span>حفاری</span>
                     </li>
                     <li>
+                        <img src={require('../../assets/images/treasure.svg')} alt=""/>
                         {data.winner}
-                        <span> گنچ های پیدا شده</span>
+                        <span>گنچ پیدا شده</span>
                     </li>
 
                 </ul>
@@ -53,6 +51,6 @@ const STYLE = {
         top: 0,
         left: 0,
         borderRadius: 5,
-        opacity: 0.9
+        opacity: 1
     }
 };

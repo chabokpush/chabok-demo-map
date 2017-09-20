@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
 import Transition from 'react-motion-ui-pack';
+import * as trophy from '../../assets/animation/trophy.json'
+import * as typing from '../../assets/animation/data.json'
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
 import {geolocated} from 'react-geolocated';
@@ -9,32 +11,33 @@ const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
-const AnyReactComponent = ({status, key}) => (
-    <Transition
-        component={false}
-        enter={{
-            opacity: 1,
-        }}
-        leave={{
-            opacity: 0,
-        }}
-    >
-        <div
-            key={"status"}
+const MarkerComponent = ({status, key, channel}) => (
+    <div>
+        {status !== 'walking' ? <Lottie
+            key={key}
+            options={{
+                autoplay: true,
+                animationData: status === "win" ? trophy : typing,
+            }}
+            height={70}
+            width={70}
+        /> : <div
+            key={key}
             style={{
                 width: 15,
                 height: 15,
                 borderRadius: 15,
-                background: `#${_.generate(status)}`,
+                background: `#${_.generate(channel)}`,
                 padding: 4
             }}>
-            <a title={status} href="!#">
+            <a title={channel} href="!#">
                 <img
-                    alt={status}
+                    alt={channel}
                     src={require('../../assets/images/logo.svg')}/>
             </a>
-        </div>
-    </Transition>
+        </div>}
+
+    </div>
 );
 
 const CompanyLocation = () => (
@@ -84,11 +87,12 @@ class Map extends Component {
                         lng={this.props.coords ? this.props.coords.longitude : center.lng}
                     />
 
-                    {markers.map((val, id) => <AnyReactComponent
+                    {markers.map((val, id) => <MarkerComponent
                         key={id}
                         lat={val.lat}
                         lng={val.lng}
-                        status={val.channel}
+                        status={val.status}
+                        channel={val.channel}
                     />)}
                 </GoogleMapReact>
             </div>

@@ -17,6 +17,7 @@ body {
   font-size: 13px;
   line-height: 20px;
   font-family: IRANSans;
+  background: #e1dfda;
 }
 
 .map {
@@ -29,18 +30,42 @@ body {
 
 .inline-list {
   direction: rtl;
-  padding: 5px 0;
+  margin: 0;
+  padding: 0;
+  line-height: 60px;
   li {
     display: inline-block;
-    padding: 0 15px;
+    height: 50px;
+    line-height: 50px;
+    margin: 5px;
     text-align: center;
-    .react-number-easing {
-      font-weight: bold;
-      font-size: 18px;
+    position: relative;
+    padding: 0 20px 0 100px;
+    min-width: 30px;
+    img{
+      display: inline;
+      height:24px;
+      width:auto;
+      vertical-align: middle;
+      padding-left: 10px;
     }
-    h3 {
+    span {
+      width: 100px;
       text-align: center;
       font-weight: 100;
+      position: absolute;
+      left:0;
+      color: #333;
+      padding-right: 10px;
+    }
+    &:after{
+      position: absolute;
+      width: 1px;
+      height: 20px;
+      background-color: #eee;
+      content: '';
+      left: 0;
+      top:15px;
     }
   }
 }

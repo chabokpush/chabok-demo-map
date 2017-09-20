@@ -1,0 +1,16 @@
+{
+  "DEVELOPMENT": {
+    "appId": "chabok-demo",
+    "apiKey": "779e1bf80d61d8750ca2ee8fb05dfd43daa5b092",
+    "username": "chabokdemo",
+    "password": "chabokdemo",
+    "devMode": false
+  },
+  "PRODUCTION": {
+    "appId": "adp-nms-push",
+    "apiKey": "c89cd1703981e6efe5afb8d28a5f4ac418f29e2b",
+    "username": "adp",
+    "password": "test",
+    "devMode": true
+  }
+}

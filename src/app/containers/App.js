@@ -4,6 +4,7 @@ import Map from '../components/Map'
 import Board from '../components/Board'
 import chabokpush from 'chabokpush';
 import Storage from '../helper/Storage';
+import config from '../config/chabok.json';
 
 export default class App extends Component {
 
@@ -26,28 +27,11 @@ export default class App extends Component {
 
 
     componentWillUpdate(nestProps, nextState) {
-        console.log('---------------nextState.markers.length---------------------');
-        console.log(nextState.markers)
-        console.log('------------------------------------------');
-
-        // nextState.markers.length ? Storage.set('geo', this.cloneDeep(nextState.markers)) : null;
+        nextState.markers.length ? Storage.set('geo', this.cloneDeep(nextState.markers)) : null;
     }
 
     chabok() {
-        const options = {
-            appId: 'chabok-demo',
-            apiKey: '779e1bf80d61d8750ca2ee8fb05dfd43daa5b092',
-            username: 'chabokdemo',
-            password: 'chabokdemo',
-            devMode: false
-        };
-        // const options = {
-        //     appId: 'adp-nms-push',
-        //     apiKey: 'c89cd1703981e6efe5afb8d28a5f4ac418f29e2b',
-        //     username: 'adp',
-        //     password: 'test',
-        //     devMode: true
-        // };
+        const options = window.location.search.slice(1).split('=')[0] === 'dev' ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(options)
 
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
@@ -86,12 +70,8 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        // const markers = Storage.get('geo');
-        // console.log('---------------markers---------------------');
-        // console.log(this.state.markers,markers);
-        // console.log('------------------------------------------');
-
-        // markers.length ? this.setState({markers: [...this.state.markers, ...markers]}) : null;
+        const markers = Storage.get('geo');
+        markers ? this.setState({markers: markers}) : null;
         this.chabok();
     }
 

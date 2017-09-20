@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "private": true,
   "dependencies": {
-    "chabokpush": "^0.0.4",
+    "chabokpush": "^0.0.5",
     "google-map-react": "^0.24.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

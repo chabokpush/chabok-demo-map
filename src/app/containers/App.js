@@ -27,7 +27,7 @@ export default class App extends Component {
 
 
     componentWillUpdate(nestProps, nextState) {
-        nextState.markers.length ? Storage.set('geo', this.cloneDeep(nextState.markers)) : null;
+        nextState.markers.length ? Storage.set(this.options.appId, this.cloneDeep(nextState.markers)) : null;
     }
 
     generateRandomStatus(){
@@ -36,9 +36,7 @@ export default class App extends Component {
     }
 
     chabok() {
-        const options = window.location.search.slice(1).split('=')[0] === 'dev' ? config.DEVELOPMENT : config.PRODUCTION;
-        const push = new chabokpush.Chabok(options)
-
+        const push = new chabokpush.Chabok(this.options);
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
         push.on('connected', _ => {
             console.log('Connected')
@@ -77,7 +75,8 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        const markers = Storage.get('geo');
+        this.options = window.location.search.slice(1).split('=')[0] === 'dev' ? config.DEVELOPMENT : config.PRODUCTION;
+        const markers = Storage.get(this.options.appId);
         markers ? this.setState({markers: markers}) : null;
         this.chabok();
     }

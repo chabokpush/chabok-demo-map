@@ -1,6 +1,6 @@
 {
   "name": "real-time-map",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "dependencies": {
     "chabokpush": "^0.0.5",

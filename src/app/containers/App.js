@@ -5,6 +5,7 @@ import Board from '../components/Board'
 import chabokpush from 'chabokpush';
 import Storage from '../helper/Storage';
 import config from '../config/chabok.json';
+import queryString from 'query-string';
 
 export default class App extends Component {
 
@@ -12,6 +13,7 @@ export default class App extends Component {
         super();
         this.state = {
             markers: [],
+            center: {},
             stats: {
                 captain: 0,
                 idle: 0,
@@ -25,13 +27,17 @@ export default class App extends Component {
         return JSON.parse(JSON.stringify(val))
     }
 
-
     componentWillUpdate(nestProps, nextState) {
         nextState.markers.length ? Storage.set(this.options.appId, this.cloneDeep(nextState.markers)) : null;
     }
 
-    generateRandomStatus(){
-        const statusArr=['walking','typing', 'sent', 'kolang', 'win'];
+    getUrlParameter(name) {
+        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+    };
+
+    generateRandomStatus() {
+        const statusArr = ['walking', 'typing', 'sent', 'kolang', 'win'];
         return statusArr[Math.floor(Math.random() * statusArr.length)]
     }
 
@@ -44,7 +50,6 @@ export default class App extends Component {
             push.on('geo', geoEvent => {
                 console.log('Geo Event ', geoEvent);
                 this.setState({
-                    // stats: Object.assign({}, this.state.stats, {[location.status]: ++this.state.stats[location.status]}),
                     markers: this.upsetArray(this.state.markers, Object.assign(geoEvent, {
                         status: this.generateRandomStatus()
                     }))
@@ -52,10 +57,7 @@ export default class App extends Component {
             })
         });
         push.on('message', msg => console.log('Message ', msg))
-
         push.register('989120032217')
-
-
     }
 
     upsetArray(array, obj) {
@@ -74,8 +76,17 @@ export default class App extends Component {
         return arr;
     }
 
+    queryStringHandler() {
+        const queryStringObject = queryString.parse(window.location.search);
+        this.options = 'dev' in queryStringObject ? config.DEVELOPMENT : config.PRODUCTION;
+        if ('location' in queryStringObject) {
+            const centerLocationObject = queryStringObject.location.split(',');
+            this.setState({center: {lat: +centerLocationObject[0], lng: +centerLocationObject[1]}});
+        }
+    }
+
     componentDidMount() {
-        this.options = window.location.search.slice(1).split('=')[0] === 'dev' ? config.DEVELOPMENT : config.PRODUCTION;
+        this.queryStringHandler();
         const markers = Storage.get(this.options.appId);
         markers ? this.setState({markers: markers}) : null;
         this.chabok();
@@ -85,7 +96,7 @@ export default class App extends Component {
         return (
             <div className="App">
                 <Board data={this.state.stats}/>
-                <Map markers={this.state.markers}/>
+                <Map markers={this.state.markers} center={this.state.center}/>
             </div>
         );
     }

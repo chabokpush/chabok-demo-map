@@ -13,7 +13,10 @@ export default class App extends Component {
         super();
         this.state = {
             markers: [],
-            center: {},
+            center: {
+                lat: 35.759172,
+                lng: 51.400824
+            },
             stats: {
                 captain: 0,
                 idle: 0,

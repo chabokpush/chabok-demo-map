@@ -6,14 +6,15 @@ import * as typing from '../../assets/animation/data.json'
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
 import {geolocated} from 'react-geolocated';
+const Modal = require('boron/OutlineModal');
 
 const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
-const MarkerComponent = ({status, key, channel}) => (
+const MarkerComponent = ({status, key, channel, showModal}) => (
     <div>
-            <div
+        <div
             key={key}
             style={{
                 width: 15,
@@ -22,11 +23,11 @@ const MarkerComponent = ({status, key, channel}) => (
                 background: `#${_.generate(channel)}`,
                 padding: 4
             }}>
-            <a title={channel} href="!#">
+            <div title={channel} onClick={() => showModal()}>
                 <img
                     alt={channel}
                     src={require('../../assets/images/logo.svg')}/>
-            </a>
+            </div>
         </div>
     </div>
 );
@@ -57,10 +58,36 @@ class Map extends Component {
         zoom: 17
     };
 
+    constructor() {
+        super();
+        this.state = {
+            modalState: {}
+        }
+    }
+
+
+    showModal(val) {
+        this.refs.modal.show();
+        this.setState({
+            modalState: val
+        })
+    }
+
+    hideModal() {
+        this.refs.modal.hide();
+    }
+
     render() {
         const {markers, zoom, center} = this.props;
+        const {modalState} = this.state;
         return (
             <div className="map">
+                <Modal ref="modal"
+                       contentStyle={{padding: 30}}>
+                    <h2>{modalState && modalState.channel}</h2>
+                    <h3>{modalState && modalState.status}</h3>
+                    <button onClick={this.hideModal.bind(this)}>بستن</button>
+                </Modal>
                 <GoogleMapReact
                     bootstrapURLKeys={{
                         key: API_KEY,
@@ -84,6 +111,7 @@ class Map extends Component {
                         lng={val.lng}
                         status={val.status}
                         channel={val.channel}
+                        showModal={this.showModal.bind(this, val)}
                     />)}
                 </GoogleMapReact>
             </div>

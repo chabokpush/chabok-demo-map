@@ -25,7 +25,6 @@ export default class App extends Component {
                 winner: 0,
             }
         };
-        this.queryStringHandler();
         this.chabok();
     }
 
@@ -37,24 +36,26 @@ export default class App extends Component {
         nextState.markers.length ? Storage.set(this.options.appId, this.cloneDeep(nextState.markers)) : null;
     }
 
-    getUrlParameter(name) {
-        var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-        return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-    };
-
-    generateRandomStatus() {
-        const statusArr = ['walking', 'typing', 'sent', 'kolang', 'win'];
-        return statusArr[Math.floor(Math.random() * statusArr.length)]
-    }
-
     chabok() {
+        const queryStringObject = queryString.parse(window.location.search);
+        this.options = 'dev' in queryStringObject ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(this.options);
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
         push.on('connected', _ => {
-            console.log('Connected')
-            push.enableDeliveryForEvent('geo');
-            push.enableDeliveryForEvent('treasure');
-            push.enableDeliveryForEvent('captainStatus');
+            console.log('Connected');
+            push.enableEventDelivery([
+                {
+                    name: 'treasure',
+                    live: false
+                },
+                {
+                    name: 'captainStatus',
+                    live: true
+                },
+                {
+                    name: 'geo',
+                    live: false
+                }]);
             push.on('geo', geoEvent => {
                 console.log('Geo Event ', geoEvent);
                 this.setState({
@@ -76,23 +77,18 @@ export default class App extends Component {
 
         });
         push.on('message', msg => console.log('Message ', msg))
-        push.register('989120032217')
+        push.register('chabok-demo-map')
     }
 
     upsetArray(array, obj) {
         const arr = [].concat(array);
-        const userId = obj.channel.split('/')[1];
-        const updated_time = new Date().getTime();
-        const filterResult = arr.filter(val => userId && val.userId === userId);
+        const filterResult = arr.filter(val => obj.deviceId && val.deviceId === obj.deviceId);
         if (filterResult.length) {
-            arr.map((val, index) => val.userId === userId ? arr[index] = Object.assign(val, obj, {
-                userId,
-                updated_time
-            }) : '');
+            arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = Object.assign(val, obj) : '');
         } else {
-            arr.push(Object.assign(obj, {userId, updated_time}));
+            arr.push(obj);
         }
-        console.table(arr);
+        // console.table(arr);
         this.setState({
             stats: Object.assign(this.state.stats, {
                 captain: arr.length
@@ -101,17 +97,14 @@ export default class App extends Component {
         return arr;
     }
 
-    queryStringHandler() {
+
+    componentDidMount() {
         const queryStringObject = queryString.parse(window.location.search);
         this.options = 'dev' in queryStringObject ? config.DEVELOPMENT : config.PRODUCTION;
         if ('location' in queryStringObject) {
             const centerLocationObject = queryStringObject.location.split(',');
             this.setState({center: {lat: +centerLocationObject[0], lng: +centerLocationObject[1]}});
         }
-    }
-
-    componentDidMount() {
-
         const markers = Storage.get(this.options.appId);
         markers ? this.setState({markers: markers}) : null;
     }

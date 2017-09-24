@@ -12,7 +12,7 @@ const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
-const MarkerComponent = ({status, key, channel, showModal}) => (
+const MarkerComponent = ({status, key, deviceId, showModal}) => (
     <div>
         <div
             key={key}
@@ -20,12 +20,12 @@ const MarkerComponent = ({status, key, channel, showModal}) => (
                 width: 15,
                 height: 15,
                 borderRadius: 15,
-                background: `#${_.generate(channel)}`,
+                background: `#${_.generate(deviceId)}`,
                 padding: 4
             }}>
-            <div title={channel} onClick={() => showModal()}>
+            <div title={deviceId} onClick={() => showModal()}>
                 <img
-                    alt={channel}
+                    alt={deviceId}
                     src={require('../../assets/images/logo.svg')}/>
             </div>
         </div>
@@ -69,7 +69,7 @@ class Map extends Component {
     showModal(val) {
         this.refs.modal.show();
         this.setState({
-            modalState: val
+            modalState: val.data
         })
     }
 
@@ -85,8 +85,7 @@ class Map extends Component {
                 <Modal ref="modal"
                        contentStyle={{padding: 30}}>
                     <h2>{modalState && modalState.data && modalState.data.name}</h2>
-                    <h2>{modalState && modalState.channel}</h2>
-                    <h3>{modalState && modalState.status}</h3>
+                    <h2>{modalState && modalState.data && modalState.data.data}</h2>
                     <button onClick={this.hideModal.bind(this)}>بستن</button>
                 </Modal>
                 <GoogleMapReact
@@ -108,10 +107,10 @@ class Map extends Component {
 
                     {markers.map((val, id) => <MarkerComponent
                         key={id}
-                        lat={val.lat}
-                        lng={val.lng}
-                        status={val.status}
-                        channel={val.channel}
+                        lat={val.data.lat}
+                        lng={val.data.lng}
+                        status={val.data.status}
+                        deviceId={val.deviceId}
                         showModal={this.showModal.bind(this, val)}
                     />)}
                 </GoogleMapReact>

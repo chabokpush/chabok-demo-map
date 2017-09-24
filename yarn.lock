@@ -1381,9 +1381,9 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chabokpush@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/chabokpush/-/chabokpush-0.1.1.tgz#908a7de2ea0676aba4ae25f3330dae46dbbb362a"
+chabokpush@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/chabokpush/-/chabokpush-0.1.0.tgz#a066b39404bbe82bd4e6e5c27f9fe8032fea6e43"
 
 chalk@1.1.3, chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"
@@ -5004,6 +5004,10 @@ number-is-nan@^1.0.0:
 oauth-sign@~0.8.1:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.8.2.tgz#46a6ab7f0aead8deae9ec0565780b7d4efeb9d43"
+
+object-assign-deep@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/object-assign-deep/-/object-assign-deep-0.3.1.tgz#b57b7572d9a328d6448a3f4b6c0fffc8b10c61a2"
 
 object-assign@4.1.1, object-assign@^4.0.0, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"

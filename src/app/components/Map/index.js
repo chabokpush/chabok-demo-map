@@ -12,25 +12,83 @@ const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
-const MarkerComponent = ({status, key, deviceId, showModal}) => (
-    <div>
-        <div
-            key={key}
-            style={{
-                width: 15,
-                height: 15,
-                borderRadius: 15,
-                background: `#${_.generate(deviceId)}`,
-                padding: 4
-            }}>
-            <div title={deviceId} onClick={() => showModal()}>
-                <img
-                    alt={deviceId}
-                    src={require('../../assets/images/logo.svg')}/>
-            </div>
+const Typing = () => (
+    <div className="typing">
+        <div className="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
     </div>
 );
+
+const Sent = () => (
+    <div className="typing">
+        <div className="typing-indicator">
+            ارسال شد
+        </div>
+    </div>
+);
+
+
+class MarkerComponent extends Component {
+    constructor() {
+        super();
+        this.state = {hidden: true}
+    }
+
+    setTimer() {
+        this.timer && clearTimeout(this.timer);
+        this.show();
+        this.timer = setTimeout(() => {
+            this.hide();
+        }, 2500)
+    }
+
+    componentDidMount() {
+        this.setTimer();
+    }
+
+    componentWillReceiveProps() {
+        this.setTimer();
+    }
+
+    show() {
+        this.setState({hidden: false});
+    }
+
+    hide() {
+        this.setState({hidden: true});
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timer);
+    }
+
+    render() {
+        const {status, key, deviceId, showModal} = this.props;
+        const {hidden} = this.state;
+        return ( <div>
+            <div
+                key={key}
+                style={{
+                    width: 15,
+                    height: 15,
+                    borderRadius: 15,
+                    background: `#${_.generate(deviceId)}`,
+                    padding: 4
+                }}>
+                <div title={deviceId} onClick={() => showModal()}>
+                    {(status === 'typing' && !hidden) && <Typing/>}
+                    {(status === 'sent' && !hidden) && <Sent/>}
+                    <img
+                        alt={deviceId}
+                        src={require('../../assets/images/logo.svg')}/>
+                </div>
+            </div>
+        </div>)
+    }
+}
 
 const CompanyLocation = () => (
     <div style={{
@@ -49,7 +107,7 @@ const CompanyLocation = () => (
     </div>
 );
 
-class Map extends Component {
+export default class Map extends Component {
     static defaultProps = {
         center: {
             lat: 35.759172,
@@ -69,7 +127,7 @@ class Map extends Component {
     showModal(val) {
         this.refs.modal.show();
         this.setState({
-            modalState: val.data
+            modalState: val
         })
     }
 
@@ -80,29 +138,30 @@ class Map extends Component {
     render() {
         const {markers, zoom, center} = this.props;
         const {modalState} = this.state;
+        console.log(modalState);
         return (
             <div className="map">
                 <Modal ref="modal"
-                       contentStyle={{padding: 30}}>
-                    <h2>{modalState && modalState.data && modalState.data.name}</h2>
-                    <h2>{modalState && modalState.data && modalState.data.data}</h2>
+                       contentStyle={{padding: 30, textAlign: 'center'}}>
+                    <img
+                        src={require(`../../assets/images/user/user-${modalState.data && modalState.data.userInfo ? modalState.data.userInfo.avatarIdx : 0}.png`)}/>
+                    <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h2>
+                    <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.userId}</h2>
+                    <h2>{modalState.deviceId}</h2>
                     <button onClick={this.hideModal.bind(this)}>بستن</button>
                 </Modal>
                 <GoogleMapReact
                     bootstrapURLKeys={{
                         key: API_KEY,
                         language: 'fa',
-                        option: {
-                            styles: [{stylers: [{'saturation': -100}, {'gamma': 0.8}, {'lightness': 4}, {'visibility': 'on'}]}]
-                        }
                     }}
                     defaultCenter={center}
                     defaultZoom={zoom}
                 >
                     <CompanyLocation
                         key={'company'}
-                        lat={this.props.coords ? this.props.coords.latitude : center.lat}
-                        lng={this.props.coords ? this.props.coords.longitude : center.lng}
+                        lat={center.lat}
+                        lng={center.lng}
                     />
 
                     {markers.map((val, id) => <MarkerComponent
@@ -118,10 +177,3 @@ class Map extends Component {
         );
     }
 }
-
-export default geolocated({
-    positionOptions: {
-        enableHighAccuracy: true,
-    },
-    userDecisionTimeout: 5000
-})(Map);

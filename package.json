@@ -4,11 +4,12 @@
   "private": true,
   "dependencies": {
     "boron": "^0.2.3",
-    "chabokpush": "^0.1.1",
+    "chabokpush": "0.1.0",
     "flow-bin": "^0.55.0",
     "gifsicle": "^3.0.4",
     "google-map-react": "^0.24.0",
     "node-sass-chokidar": "^0.0.3",
+    "object-assign-deep": "^0.3.1",
     "query-string": "^5.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

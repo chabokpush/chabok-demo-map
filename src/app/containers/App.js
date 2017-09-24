@@ -8,16 +8,15 @@ import Storage from '../helper/Storage';
 import config from '../config/chabok.json';
 import queryString from 'query-string';
 
+const objectAssignDeep = require(`object-assign-deep`);
+
 export default class App extends Component {
 
     constructor() {
         super();
         this.state = {
             markers: [],
-            center: {
-                lat: 35.759172,
-                lng: 51.400824
-            },
+            center: {},
             stats: {
                 captain: 0,
                 idle: 0,
@@ -25,7 +24,6 @@ export default class App extends Component {
                 winner: 0,
             }
         };
-        this.chabok();
     }
 
     cloneDeep(val) {
@@ -37,25 +35,32 @@ export default class App extends Component {
     }
 
     chabok() {
-        const queryStringObject = queryString.parse(window.location.search);
-        this.options = 'dev' in queryStringObject ? config.DEVELOPMENT : config.PRODUCTION;
+        this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(this.options);
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
         push.on('connected', _ => {
             console.log('Connected');
-            push.enableEventDelivery([
-                {
-                    name: 'treasure',
-                    live: false
-                },
-                {
-                    name: 'captainStatus',
-                    live: true
-                },
-                {
-                    name: 'geo',
-                    live: false
-                }]);
+            // push.enableEventDelivery([
+            //     {
+            //         name: 'treasure',
+            //         live: false
+            //     },
+            //     {
+            //         name: 'captainStatus',
+            //         live: true
+            //     },
+            //     {
+            //         name: 'geo',
+            //         live: false
+            //     },
+            //     {
+            //         name: 'newDevice',
+            //         live: false
+            //     }]);
+            push.enableEventDelivery('treasure');
+            push.enableEventDelivery('captainStatus');
+            push.enableEventDelivery('geo');
+            push.enableEventDelivery('newDevice');
             push.on('geo', geoEvent => {
                 console.log('Geo Event ', geoEvent);
                 this.setState({
@@ -74,7 +79,12 @@ export default class App extends Component {
                     markers: this.upsetArray(this.state.markers, status)
                 })
             });
-
+            push.on('newDevice', devices => {
+                console.log('newDevice ', devices);
+                this.setState({
+                    markers: this.upsetArray(this.state.markers, devices)
+                })
+            });
         });
         push.on('message', msg => console.log('Message ', msg))
         push.register('chabok-demo-map')
@@ -84,22 +94,25 @@ export default class App extends Component {
         const arr = [].concat(array);
         const filterResult = arr.filter(val => obj.deviceId && val.deviceId === obj.deviceId);
         if (filterResult.length) {
-            arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = Object.assign(val, obj) : '');
+            arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep(val, obj) : '');
         } else {
             arr.push(obj);
         }
-        // console.table(arr);
         this.setState({
-            stats: Object.assign(this.state.stats, {
+            stats: objectAssignDeep(this.state.stats, {
                 captain: arr.length
             })
         });
         return arr;
     }
 
+    getQueryStringObject() {
+        return queryString.parse(window.location.search)
+    }
 
     componentDidMount() {
-        const queryStringObject = queryString.parse(window.location.search);
+        this.chabok();
+        const queryStringObject = this.getQueryStringObject();
         this.options = 'dev' in queryStringObject ? config.DEVELOPMENT : config.PRODUCTION;
         if ('location' in queryStringObject) {
             const centerLocationObject = queryStringObject.location.split(',');
@@ -110,10 +123,13 @@ export default class App extends Component {
     }
 
     render() {
+        const props = Object.assign(Object.keys(this.state.center).length && {
+                center: this.state.center
+            });
         return (
             <div className="App">
                 <Board data={this.state.stats}/>
-                <Map markers={this.state.markers} center={this.state.center}/>
+                <Map markers={this.state.markers} {...props}/>
                 <Footer data={this.state.markers}/>
             </div>
         );

@@ -4,8 +4,11 @@
   "private": true,
   "dependencies": {
     "boron": "^0.2.3",
-    "chabokpush": "0.0.5",
+    "chabokpush": "^0.0.6",
+    "flow-bin": "^0.55.0",
+    "gifsicle": "^3.0.4",
     "google-map-react": "^0.24.0",
+    "node-sass-chokidar": "^0.0.3",
     "query-string": "^5.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
@@ -16,13 +19,18 @@
     "react-motion-ui-pack": "^0.10.3",
     "react-number-easing": "0.0.4",
     "react-scripts": "^1.0.13",
+    "react-slick": "^0.15.4",
+    "slick-carousel": "^1.7.1",
     "store": "^2.0.12",
     "string-to-color": "^1.0.1"
   },
   "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./node_modules src/app/assets/css/App.scss -o src/app/assets/css/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./node_modules src/app/assets/css/App.scss -o src/app/assets/css/ --watch --recursive",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   }
 }

@@ -84,6 +84,7 @@ class Map extends Component {
             <div className="map">
                 <Modal ref="modal"
                        contentStyle={{padding: 30}}>
+                    <h2>{modalState && modalState.data && modalState.data.name}</h2>
                     <h2>{modalState && modalState.channel}</h2>
                     <h3>{modalState && modalState.status}</h3>
                     <button onClick={this.hideModal.bind(this)}>بستن</button>

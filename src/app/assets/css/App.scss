@@ -1,5 +1,7 @@
 * {
   -webkit-tap-highlight-color: transparent;
+  min-height: 0;
+  min-width: 0;
 }
 
 html {
@@ -28,6 +30,32 @@ body {
   height: 100%;
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  background: #ffffff;
+  right: 50%;
+  margin-right: -45%;
+  border-radius: 5px 5px 0 0;
+  height: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+
+}
+
+.slider {
+  .item {
+    text-align: center;
+    height: 100%;
+    padding-top: 15px;
+    img {
+      display: inline;
+      height: 20px;
+      width: auto;
+    }
+  }
+}
+
 .inline-list {
   direction: rtl;
   margin: 0;
@@ -42,10 +70,10 @@ body {
     position: relative;
     padding: 0 20px 0 100px;
     min-width: 30px;
-    img{
+    img {
       display: inline;
-      height:24px;
-      width:auto;
+      height: 24px;
+      width: auto;
       vertical-align: middle;
       padding-left: 10px;
     }
@@ -54,18 +82,18 @@ body {
       text-align: center;
       font-weight: 100;
       position: absolute;
-      left:0;
+      left: 0;
       color: #333;
       padding-right: 10px;
     }
-    &:after{
+    &:after {
       position: absolute;
       width: 1px;
       height: 20px;
       background-color: #eee;
       content: '';
       left: 0;
-      top:15px;
+      top: 15px;
     }
   }
 }

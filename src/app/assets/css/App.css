@@ -1,5 +1,7 @@
 * {
-  -webkit-tap-highlight-color: transparent; }
+  -webkit-tap-highlight-color: transparent;
+  min-height: 0;
+  min-width: 0; }
 
 html {
   -ms-text-size-adjust: 100%;
@@ -22,6 +24,26 @@ body {
   top: 0;
   width: 100%;
   height: 100%; }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 90%;
+  background: #ffffff;
+  right: 50%;
+  margin-right: -45%;
+  border-radius: 5px 5px 0 0;
+  height: 100px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1); }
+
+.slider .item {
+  text-align: center;
+  height: 100%;
+  padding-top: 15px; }
+  .slider .item img {
+    display: inline;
+    height: 20px;
+    width: auto; }
 
 .inline-list {
   direction: rtl;
@@ -59,5 +81,3 @@ body {
       content: '';
       left: 0;
       top: 15px; }
-
-/*# sourceMappingURL=App.css.map */

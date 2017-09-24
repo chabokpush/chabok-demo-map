@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import '../assets/css/App.css';
 import Map from '../components/Map'
 import Board from '../components/Board'
+import Footer from '../components/Footer'
 import chabokpush from 'chabokpush';
 import Storage from '../helper/Storage';
 import config from '../config/chabok.json';
@@ -23,7 +24,9 @@ export default class App extends Component {
                 digging: 0,
                 winner: 0,
             }
-        }
+        };
+        this.queryStringHandler();
+        this.chabok();
     }
 
     cloneDeep(val) {
@@ -49,15 +52,28 @@ export default class App extends Component {
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
         push.on('connected', _ => {
             console.log('Connected')
-            push.enableDeliveryForEvent('geo')
+            push.enableDeliveryForEvent('geo');
+            push.enableDeliveryForEvent('treasure');
+            push.enableDeliveryForEvent('captainStatus');
             push.on('geo', geoEvent => {
                 console.log('Geo Event ', geoEvent);
                 this.setState({
-                    markers: this.upsetArray(this.state.markers, Object.assign(geoEvent, {
-                        status: this.generateRandomStatus()
-                    }))
+                    markers: this.upsetArray(this.state.markers, geoEvent)
                 })
-            })
+            });
+            push.on('treasure', treasureEvent => {
+                console.log('treasure ', treasureEvent);
+                this.setState({
+                    markers: this.upsetArray(this.state.markers, treasureEvent)
+                })
+            });
+            push.on('captainStatus', status => {
+                console.log('captainStatus ', status);
+                this.setState({
+                    markers: this.upsetArray(this.state.markers, status)
+                })
+            });
+
         });
         push.on('message', msg => console.log('Message ', msg))
         push.register('989120032217')
@@ -65,12 +81,18 @@ export default class App extends Component {
 
     upsetArray(array, obj) {
         const arr = [].concat(array);
-        const filterResult = arr.filter(val => obj.channel && val.channel === obj.channel);
+        const userId = obj.channel.split('/')[1];
+        const updated_time = new Date().getTime();
+        const filterResult = arr.filter(val => userId && val.userId === userId);
         if (filterResult.length) {
-            arr.map((val, index) => val.channel === obj.channel ? arr[index] = Object.assign(val, obj) : '');
+            arr.map((val, index) => val.userId === userId ? arr[index] = Object.assign(val, obj, {
+                userId,
+                updated_time
+            }) : '');
         } else {
-            arr.push(obj)
+            arr.push(Object.assign(obj, {userId, updated_time}));
         }
+        console.table(arr);
         this.setState({
             stats: Object.assign(this.state.stats, {
                 captain: arr.length
@@ -89,10 +111,9 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        this.queryStringHandler();
+
         const markers = Storage.get(this.options.appId);
         markers ? this.setState({markers: markers}) : null;
-        this.chabok();
     }
 
     render() {
@@ -100,6 +121,7 @@ export default class App extends Component {
             <div className="App">
                 <Board data={this.state.stats}/>
                 <Map markers={this.state.markers} center={this.state.center}/>
+                <Footer data={this.state.markers}/>
             </div>
         );
     }

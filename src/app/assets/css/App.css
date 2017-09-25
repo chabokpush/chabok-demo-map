@@ -42,7 +42,7 @@ body {
   padding-top: 15px; }
   .slider .item img {
     display: inline;
-    height: 20px;
+    height: 40px;
     width: auto; }
 
 .inline-list {
@@ -85,7 +85,8 @@ body {
 .modal {
   position: absolute;
   top: -20px;
-  right: -30px; }
+  left: 50%;
+  margin-left: 5px; }
   .modal .typing-indicator {
     background-color: #fff;
     width: 28px;

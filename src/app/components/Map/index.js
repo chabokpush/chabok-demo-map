@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
-import Transition from 'react-motion-ui-pack';
 import * as trophy from '../../assets/animation/trophy.json'
 import * as typing from '../../assets/animation/data.json'
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
-import {geolocated} from 'react-geolocated';
 const Modal = require('boron/OutlineModal');
 
 const _ = require('string-to-color');
@@ -92,9 +90,9 @@ class MarkerComponent extends Component {
             case 'sent':
                 return <Sent receivedAt={receivedAt}/>;
                 break;
-            case 'idle':
-                return <Idle receivedAt={receivedAt}/>;
-                break;
+            // case 'idle':
+            //     return <Idle receivedAt={receivedAt}/>;
+            //     break;
             default:
                 return null;
         }
@@ -112,7 +110,8 @@ class MarkerComponent extends Component {
                     height: 15,
                     borderRadius: 15,
                     background: `#${_.generate(deviceId)}`,
-                    padding: 4
+                    padding: 4,
+                    position:'relative'
                 }}>
                 <div onClick={() => showModal()}>
                     {statusMotion}
@@ -199,7 +198,7 @@ export default class Map extends Component {
                         lng={center.lng}
                     />
 
-                    {markers.map((val, id) => <MarkerComponent
+                    {markers.map((val, id) => val.data.lat && val.data.lng && <MarkerComponent
                         key={id}
                         lat={val.data.lat}
                         lng={val.data.lng}

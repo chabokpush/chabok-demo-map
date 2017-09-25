@@ -12,14 +12,21 @@ export default class Footer extends Component {
             speed: 500,
             slidesToShow: 4,
             slidesToScroll: 4,
+            initialSlide: 0,
             arrows: false,
-            responsive: [{
+            responsive: [
+                {
+                    breakpoint: 2000,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 5,
+                    }
+                },
+                {
                 breakpoint: 1024,
                 settings: {
                     slidesToShow: 3,
                     slidesToScroll: 3,
-                    infinite: true,
-                    dots: true
                 }
             }, {
                 breakpoint: 600,
@@ -40,10 +47,11 @@ export default class Footer extends Component {
         return (
             <div className="footer">
                 <Slider {...settings} className="slider">
-                    {data.map((val, id) =>
-                        <div className="item" key={id}>
-                            <img src={require('../../assets/images/captain.svg')} alt=""/>
-                            {val.data && <div>{val.data.name}</div>}
+                    {data.reverse().map((val, id) =>
+                        val.data && val.data.userInfo && <div className="item" key={id}>
+                            <img
+                                src={require(`../../assets/images/user/user-${val.data && val.data.userInfo ? val.data.userInfo.avatarIdx : 0}.png`)}/>
+                            {val.data && <div>{val.data.userInfo && val.data.userInfo.name}</div>}
                         </div>
                     )}
                 </Slider>

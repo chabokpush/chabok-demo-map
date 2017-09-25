@@ -50,7 +50,7 @@ body {
     padding-top: 15px;
     img {
       display: inline;
-      height: 20px;
+      height: 40px;
       width: auto;
     }
   }
@@ -101,7 +101,8 @@ body {
 .modal {
   position: absolute;
   top: -20px;
-  right: -30px;
+  left: 50%;
+  margin-left: 5px;
   .typing-indicator {
     $ti-color-bg: #fff;
     background-color: $ti-color-bg;

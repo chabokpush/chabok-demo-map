@@ -39,27 +39,23 @@ export default class App extends Component {
         push.on('registered', deviceId => console.log('DeviceId ', deviceId))
         push.on('connected', _ => {
             console.log('Connected');
-            // push.enableEventDelivery([
-            //     {
-            //         name: 'treasure',
-            //         live: false
-            //     },
-            //     {
-            //         name: 'captainStatus',
-            //         live: true
-            //     },
-            //     {
-            //         name: 'geo',
-            //         live: false
-            //     },
-            //     {
-            //         name: 'newDevice',
-            //         live: false
-            //     }]);
-            push.enableEventDelivery('treasure');
-            push.enableEventDelivery('captainStatus');
-            push.enableEventDelivery('geo');
-            push.enableEventDelivery('newDevice');
+            push.enableEventDelivery([
+                {
+                    name: 'treasure',
+                    live: true
+                },
+                {
+                    name: 'captainStatus',
+                    live: false
+                },
+                {
+                    name: 'geo',
+                    live: false
+                },
+                {
+                    name: 'newDevice',
+                    live: false
+                }]);
             push.on('geo', geoEvent => {
                 console.log('Geo Event ', geoEvent);
                 this.setState({

@@ -33,8 +33,8 @@ const Sent = ({receivedAt}) => (
     </div>
 );
 
-const Idle = ({receivedAt}) => (
-    <div className="modal" style={{zIndex: receivedAt}}>
+const Idle = () => (
+    <div className="modal">
         <div className="idle-indicator">
             <span>z</span>
             <span>z</span>
@@ -87,6 +87,10 @@ class MarkerComponent extends Component {
     render() {
         const {status, key, deviceId, showModal, receivedAt} = this.props;
         const {hidden} = this.state;
+        console.log('------------------------------------');
+        console.log(status === 'idle')
+        console.log('------------------------------------------');
+
         return ( <div>
             <div
                 key={key}
@@ -98,9 +102,9 @@ class MarkerComponent extends Component {
                     padding: 4
                 }}>
                 <div title={deviceId} onClick={() => showModal()}>
-                    {(status === 'typing') && <Typing receivedAt={receivedAt}/>}
-                    {(status === 'sent') && <Sent receivedAt={receivedAt}/>}
-                    {(status === 'idle') && <Idle receivedAt={receivedAt}/>}
+                    {status === 'typing' ? <Typing receivedAt={receivedAt}/> : null}
+                    {status === 'sent' ? <Sent receivedAt={receivedAt}/> : null}
+                    {status === 'idle' ? <Idle receivedAt={receivedAt}/> : null}
                     <img
                         alt={deviceId}
                         src={require('../../assets/images/logo.svg')}/>

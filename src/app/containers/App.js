@@ -7,8 +7,7 @@ import chabokpush from 'chabokpush';
 import Storage from '../helper/Storage';
 import config from '../config/chabok.json';
 import queryString from 'query-string';
-
-const objectAssignDeep = require(`object-assign-deep`);
+const objectAssignDeep = require(`../helper/objectAssignDeep`);
 
 export default class App extends Component {
 

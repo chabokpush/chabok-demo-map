@@ -84,13 +84,26 @@ class MarkerComponent extends Component {
         // clearTimeout(this.timer);
     }
 
+    userStatus(state, receivedAt) {
+        switch (state) {
+            case 'typing':
+                return <Typing receivedAt={receivedAt}/>;
+                break;
+            case 'sent':
+                return <Sent receivedAt={receivedAt}/>;
+                break;
+            case 'idle':
+                return <Idle receivedAt={receivedAt}/>;
+                break;
+            default:
+                return null;
+        }
+    }
+
     render() {
         const {status, key, deviceId, showModal, receivedAt} = this.props;
         const {hidden} = this.state;
-        console.log('------------------------------------');
-        console.log(status === 'idle')
-        console.log('------------------------------------------');
-
+        const statusMotion = this.userStatus(status, receivedAt);
         return ( <div>
             <div
                 key={key}
@@ -101,10 +114,8 @@ class MarkerComponent extends Component {
                     background: `#${_.generate(deviceId)}`,
                     padding: 4
                 }}>
-                <div title={deviceId} onClick={() => showModal()}>
-                    {status === 'typing' ? <Typing receivedAt={receivedAt}/> : null}
-                    {status === 'sent' ? <Sent receivedAt={receivedAt}/> : null}
-                    {status === 'idle' ? <Idle receivedAt={receivedAt}/> : null}
+                <div onClick={() => showModal()}>
+                    {statusMotion}
                     <img
                         alt={deviceId}
                         src={require('../../assets/images/logo.svg')}/>

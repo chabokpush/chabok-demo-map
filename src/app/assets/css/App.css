@@ -39,7 +39,7 @@ body {
 .slider .item {
   text-align: center;
   height: 100%;
-  padding-top: 15px; }
+  padding-top: 5px; }
   .slider .item img {
     display: inline;
     height: 40px;
@@ -162,7 +162,9 @@ body {
     display: inline-block;
     margin: 0 auto;
     position: relative;
-    animation: 0.5s bulge infinite ease-out;
+    animation: invisibleMotion linear 6S;
+    animation-iteration-count: 1;
+    opacity: 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
     .modal .dig-indicator img {
       transform: rotate(20deg);
@@ -172,6 +174,17 @@ body {
 @keyframes blink {
   50% {
     opacity: 1; } }
+
+@keyframes invisibleMotion {
+  0% {
+    opacity: 1;
+    transform: translateY(0px); }
+  90% {
+    opacity: 1;
+    transform: translateY(0px); }
+  100% {
+    transform: translateY(-10px);
+    opacity: 0; } }
 
 @keyframes digging {
   50% {

@@ -12,8 +12,8 @@ const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
-const Typing = () => (
-    <div className="typing">
+const Typing = ({receivedAt}) => (
+    <div className="modal" style={{zIndex: receivedAt}}>
         <div className="typing-indicator">
             <span></span>
             <span></span>
@@ -22,14 +22,26 @@ const Typing = () => (
     </div>
 );
 
-const Sent = () => (
-    <div className="typing">
-        <div className="typing-indicator">
-            ارسال شد
+const Sent = ({receivedAt}) => (
+    <div className="modal">
+        <div className="sent-indicator" style={{zIndex: receivedAt}}>
+            <img
+                src={require('../../assets/images/double-check.svg')}
+                width={15}
+            />
         </div>
     </div>
 );
 
+const Idle = ({receivedAt}) => (
+    <div className="modal" style={{zIndex: receivedAt}}>
+        <div className="idle-indicator">
+            <span>z</span>
+            <span>z</span>
+            <span>Z</span>
+        </div>
+    </div>
+);
 
 class MarkerComponent extends Component {
     constructor() {
@@ -45,28 +57,35 @@ class MarkerComponent extends Component {
         }, 2500)
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        const delay = nextProps.status === this.props.status ? 2500 : 500;
+        return nextProps.receivedAt > this.props.receivedAt + delay
+    }
+
     componentDidMount() {
-        this.setTimer();
+        // this.setTimer();
     }
 
     componentWillReceiveProps() {
-        this.setTimer();
+        //  this.setTimer();
     }
 
     show() {
-        this.setState({hidden: false});
+        //this.setState({hidden: false});
     }
 
     hide() {
+        clearTimeout(this.timer);
+        this.timer = null;
         this.setState({hidden: true});
     }
 
     componentWillUnmount() {
-        clearTimeout(this.timer);
+        // clearTimeout(this.timer);
     }
 
     render() {
-        const {status, key, deviceId, showModal} = this.props;
+        const {status, key, deviceId, showModal, receivedAt} = this.props;
         const {hidden} = this.state;
         return ( <div>
             <div
@@ -79,8 +98,9 @@ class MarkerComponent extends Component {
                     padding: 4
                 }}>
                 <div title={deviceId} onClick={() => showModal()}>
-                    {(status === 'typing' && !hidden) && <Typing/>}
-                    {(status === 'sent' && !hidden) && <Sent/>}
+                    {(status === 'typing') && <Typing receivedAt={receivedAt}/>}
+                    {(status === 'sent') && <Sent receivedAt={receivedAt}/>}
+                    {(status === 'idle') && <Idle receivedAt={receivedAt}/>}
                     <img
                         alt={deviceId}
                         src={require('../../assets/images/logo.svg')}/>
@@ -168,6 +188,7 @@ export default class Map extends Component {
                         key={id}
                         lat={val.data.lat}
                         lng={val.data.lng}
+                        receivedAt={val.receivedAt}
                         status={val.data.status}
                         deviceId={val.deviceId}
                         showModal={this.showModal.bind(this, val)}

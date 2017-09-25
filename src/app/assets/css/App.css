@@ -82,49 +82,91 @@ body {
       left: 0;
       top: 15px; }
 
-.typing {
+.modal {
   position: absolute;
-  top: -30px;
-  right: -65px; }
-  .typing .typing-indicator {
-    background-color: #156afb;
-    will-change: transform;
-    width: auto;
-    border-radius: 50px;
-    padding: 10px;
-    display: table;
+  top: -20px;
+  right: -30px; }
+  .modal .typing-indicator {
+    background-color: #fff;
+    width: 28px;
+    border-radius: 10px 10px 10px 0;
+    padding: 5px;
+    display: inline-block;
     margin: 0 auto;
     position: relative;
-    animation: 2s bulge infinite ease-out; }
-    .typing .typing-indicator::before, .typing .typing-indicator::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: -2px;
-      height: 10px;
-      width: 10px;
-      border-radius: 50%;
-      background-color: #156afb; }
-    .typing .typing-indicator span {
-      height: 10px;
-      width: 10px;
-      float: left;
+    animation: 2s bulge infinite ease-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+    .modal .typing-indicator span {
+      height: 5px;
+      width: 5px;
       margin: 0 2px;
-      background-color: #ffffff;
-      display: block;
+      background-color: #156afb;
+      display: inline-block;
       border-radius: 50%;
       opacity: 0.4; }
-      .typing .typing-indicator span:nth-of-type(1) {
+      .modal .typing-indicator span:nth-of-type(1) {
         animation: 1s blink infinite 0.3333s; }
-      .typing .typing-indicator span:nth-of-type(2) {
+      .modal .typing-indicator span:nth-of-type(2) {
         animation: 1s blink infinite 0.6666s; }
-      .typing .typing-indicator span:nth-of-type(3) {
+      .modal .typing-indicator span:nth-of-type(3) {
         animation: 1s blink infinite 0.9999s; }
+  .modal .idle-indicator {
+    background-color: #fff;
+    width: 28px;
+    border-radius: 10px 10px 10px 0;
+    padding: 5px;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    animation: 2s bulge infinite ease-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+    .modal .idle-indicator span {
+      font-size: 10px;
+      margin: 0 1px;
+      color: #156afb;
+      display: inline-block;
+      border-radius: 50%;
+      opacity: 0.4; }
+      .modal .idle-indicator span:nth-of-type(1) {
+        animation: 1.5s bigger infinite 0.3333s; }
+      .modal .idle-indicator span:nth-of-type(2) {
+        animation: 1.5s bigger infinite 0.6666s; }
+      .modal .idle-indicator span:nth-of-type(3) {
+        animation: 1.5s bigger infinite 0.9999s; }
+  .modal .sent-indicator {
+    background-color: #fff;
+    text-align: center;
+    width: 28px;
+    border-radius: 10px 10px 10px 0;
+    padding: 5px;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    animation: 2s hide ease-out;
+    animation-iteration-count: 1;
+    opacity: 0;
+    transform: translateY(0px);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
+    .modal .sent-indicator img {
+      vertical-align: middle; }
 
 @keyframes blink {
   50% {
     opacity: 1; } }
 
+@keyframes bigger {
+  50% {
+    font-size: 12px;
+    opacity: 1; } }
+
 @keyframes bulge {
   50% {
     transform: scale(1.05); } }
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+    transform: translateY(0px); }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px); } }

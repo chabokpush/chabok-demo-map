@@ -31,6 +31,7 @@ export default class App extends Component {
 
     componentWillUpdate(nestProps, nextState) {
         nextState.markers.length ? Storage.set(this.options.appId, this.cloneDeep(nextState.markers)) : null;
+        Object.keys(nextState.stats).length ? Storage.set('stats', this.cloneDeep(nextState.stats)) : null;
     }
 
     chabok() {
@@ -93,8 +94,14 @@ export default class App extends Component {
         } else {
             arr.push(obj);
         }
+        console.log('---------------obj---------------------');
+        console.log(obj)
+        console.log('----------------obj--------------------------');
+
         this.setState({
             stats: objectAssignDeep(this.state.stats, {
+                digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
+                winner: obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
                 captain: arr.length
             })
         });
@@ -114,12 +121,14 @@ export default class App extends Component {
             this.setState({center: {lat: +centerLocationObject[0], lng: +centerLocationObject[1]}});
         }
         const markers = Storage.get(this.options.appId);
+        const stats = Storage.get('stats');
         markers ? this.setState({markers: markers}) : null;
+        stats ? this.setState({stats: stats}) : null;
     }
 
     render() {
         const props = Object.assign(Object.keys(this.state.center).length && {
-                center: this.state.center
+                center: this.state.center,
             });
         return (
             <div className="App">

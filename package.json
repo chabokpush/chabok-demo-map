@@ -23,7 +23,8 @@
     "react-slick": "^0.15.4",
     "slick-carousel": "^1.7.1",
     "store": "^2.0.12",
-    "string-to-color": "^1.0.1"
+    "string-to-color": "^1.0.1",
+    "timeago-react": "^1.2.2"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./node_modules src/app/assets/css/App.scss -o src/app/assets/css/",

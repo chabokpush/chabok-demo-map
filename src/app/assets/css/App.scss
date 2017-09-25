@@ -61,6 +61,8 @@ body {
   margin: 0;
   padding: 0;
   line-height: 60px;
+  white-space: nowrap;
+  background: #ffffff;
   li {
     display: inline-block;
     height: 50px;
@@ -174,11 +176,35 @@ body {
       vertical-align: middle;
     }
   }
+  .dig-indicator {
+    $ti-color-bg: #EBA000;
+    background-color: $ti-color-bg;
+    text-align: center;
+    width: 28px;
+    border-radius: 10px 10px 10px 0;
+    padding: 5px;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    animation: 0.5s bulge infinite ease-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    img {
+      transform: rotate(20deg);
+      animation: 1s digging infinite ease;
+      vertical-align: middle;
+    }
+  }
 }
 
 @keyframes blink {
   50% {
     opacity: 1;
+  }
+}
+
+@keyframes digging {
+  50% {
+    transform: rotate(-40deg);
   }
 }
 

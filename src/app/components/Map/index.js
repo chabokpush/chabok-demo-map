@@ -5,7 +5,6 @@ import * as typing from '../../assets/animation/data.json'
 import * as animationData from '../../assets/animation/location.json'
 import Lottie from 'react-lottie';
 const Modal = require('boron/OutlineModal');
-
 const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
@@ -25,6 +24,17 @@ const Sent = ({receivedAt}) => (
         <div className="sent-indicator" style={{zIndex: receivedAt}}>
             <img
                 src={require('../../assets/images/double-check.svg')}
+                width={15}
+            />
+        </div>
+    </div>
+);
+
+const Digging = ({receivedAt}) => (
+    <div className="modal">
+        <div className="dig-indicator" style={{zIndex: receivedAt}}>
+            <img
+                src={require('../../assets/images/dig.svg')}
                 width={15}
             />
         </div>
@@ -89,6 +99,9 @@ class MarkerComponent extends Component {
                 break;
             case 'sent':
                 return <Sent receivedAt={receivedAt}/>;
+                break;
+            case 'digging':
+                return <Digging receivedAt={receivedAt}/>;
                 break;
             // case 'idle':
             //     return <Idle receivedAt={receivedAt}/>;

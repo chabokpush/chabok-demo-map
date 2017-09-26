@@ -17,10 +17,9 @@ export default class App extends Component {
             markers: [],
             center: {},
             stats: {
-                captain: 0,
-                idle: 0,
                 digging: 0,
                 winner: 0,
+                captain: 0
             }
         };
     }
@@ -29,7 +28,7 @@ export default class App extends Component {
         return JSON.parse(JSON.stringify(val))
     }
 
-    componentWillUpdate(nestProps, nextState) {
+    componentWillUpdate(nextProps, nextState) {
         nextState.markers.length ? Storage.set(this.options.appId, this.cloneDeep(nextState.markers)) : null;
         Object.keys(nextState.stats).length ? Storage.set('stats', this.cloneDeep(nextState.stats)) : null;
     }
@@ -37,7 +36,7 @@ export default class App extends Component {
     chabok() {
         this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(this.options);
-        push.on('registered', deviceId => console.log('DeviceId ', deviceId))
+        push.on('registered', deviceId => console.log('DeviceId ', deviceId));
         push.on('connected', _ => {
             console.log('Connected');
             push.enableEventDelivery([
@@ -59,31 +58,29 @@ export default class App extends Component {
                 }]);
             push.on('geo', geoEvent => {
                 console.log('Geo Event ', geoEvent);
-                this.setState({
-                    markers: this.upsetArray(this.state.markers, geoEvent)
-                })
+                this.setMarkerState(geoEvent);
             });
             push.on('treasure', treasureEvent => {
                 console.log('treasure ', treasureEvent);
-                this.setState({
-                    markers: this.upsetArray(this.state.markers, treasureEvent)
-                })
+                this.setMarkerState(treasureEvent);
             });
             push.on('captainStatus', status => {
                 console.log('captainStatus ', status);
-                this.setState({
-                    markers: this.upsetArray(this.state.markers, status)
-                })
+                this.setMarkerState(status);
             });
             push.on('newDevice', devices => {
                 console.log('newDevice ', devices);
-                this.setState({
-                    markers: this.upsetArray(this.state.markers, devices)
-                })
+                this.setMarkerState(devices);
             });
         });
         push.on('message', msg => console.log('Message ', msg))
         push.register('chabok-demo-map')
+    }
+
+    setMarkerState(obj) {
+        this.setState((previousState, currentProps) => ({
+            markers: this.upsetArray(previousState.markers, obj)
+        }));
     }
 
     upsetArray(array, obj) {
@@ -94,10 +91,6 @@ export default class App extends Component {
         } else {
             arr.push(obj);
         }
-        console.log('---------------obj---------------------');
-        console.log(obj)
-        console.log('----------------obj--------------------------');
-
         this.setState({
             stats: objectAssignDeep(this.state.stats, {
                 digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
@@ -123,7 +116,7 @@ export default class App extends Component {
         const markers = Storage.get(this.options.appId);
         const stats = Storage.get('stats');
         markers ? this.setState({markers: markers}) : null;
-        stats ? this.setState({stats: stats}) : null;
+        // stats ? this.setState({stats: stats}) : null;
     }
 
     render() {

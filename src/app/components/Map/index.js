@@ -3,139 +3,11 @@ import GoogleMapReact from 'google-map-react';
 import * as trophy from '../../assets/animation/trophy.json'
 import * as typing from '../../assets/animation/data.json'
 import * as animationData from '../../assets/animation/location.json'
+import Marker from '../../components/Marker'
 import Lottie from 'react-lottie';
 const Modal = require('boron/OutlineModal');
-const _ = require('string-to-color');
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
-
-const Typing = ({receivedAt}) => (
-    <div className="modal" style={{zIndex: receivedAt}}>
-        <div className="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div>
-);
-
-const Sent = ({receivedAt}) => (
-    <div className="modal">
-        <div className="sent-indicator" style={{zIndex: receivedAt}}>
-            <img
-                src={require('../../assets/images/double-check.svg')}
-                width={15}
-            />
-        </div>
-    </div>
-);
-
-const Digging = ({receivedAt}) => (
-    <div className="modal">
-        <div className="dig-indicator" style={{zIndex: receivedAt}}>
-            <img
-                src={require('../../assets/images/dig.svg')}
-                width={15}
-            />
-        </div>
-    </div>
-);
-
-const Idle = () => (
-    <div className="modal">
-        <div className="idle-indicator">
-            <span>z</span>
-            <span>z</span>
-            <span>Z</span>
-        </div>
-    </div>
-);
-
-class MarkerComponent extends Component {
-    constructor() {
-        super();
-        this.state = {hidden: true}
-    }
-
-    setTimer() {
-        this.timer && clearTimeout(this.timer);
-        this.show();
-        this.timer = setTimeout(() => {
-            this.hide();
-        }, 2500)
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        const delay = nextProps.status === this.props.status ? 2500 : 500;
-        return nextProps.receivedAt > this.props.receivedAt + delay
-    }
-
-    componentDidMount() {
-        // this.setTimer();
-    }
-
-    componentWillReceiveProps() {
-        //  this.setTimer();
-    }
-
-    show() {
-        //this.setState({hidden: false});
-    }
-
-    hide() {
-        clearTimeout(this.timer);
-        this.timer = null;
-        this.setState({hidden: true});
-    }
-
-    componentWillUnmount() {
-        // clearTimeout(this.timer);
-    }
-
-    userStatus(state, receivedAt) {
-        switch (state) {
-            case 'typing':
-                return <Typing receivedAt={receivedAt}/>;
-                break;
-            case 'sent':
-                return <Sent receivedAt={receivedAt}/>;
-                break;
-            case 'digging':
-                return <Digging receivedAt={receivedAt}/>;
-                break;
-            // case 'idle':
-            //     return <Idle receivedAt={receivedAt}/>;
-            //     break;
-            default:
-                return null;
-        }
-    }
-
-    render() {
-        const {status, key, deviceId, showModal, receivedAt} = this.props;
-        const {hidden} = this.state;
-        const statusMotion = this.userStatus(status, receivedAt);
-        return ( <div>
-            <div
-                key={key}
-                style={{
-                    width: 15,
-                    height: 15,
-                    borderRadius: 15,
-                    background: `#${_.generate(deviceId)}`,
-                    padding: 4,
-                    position:'relative'
-                }}>
-                <div onClick={() => showModal()}>
-                    {statusMotion}
-                    <img
-                        alt={deviceId}
-                        src={require('../../assets/images/logo.svg')}/>
-                </div>
-            </div>
-        </div>)
-    }
-}
 
 const CompanyLocation = () => (
     <div style={{
@@ -185,7 +57,6 @@ export default class Map extends Component {
     render() {
         const {markers, zoom, center} = this.props;
         const {modalState} = this.state;
-        console.log(modalState);
         return (
             <div className="map">
                 <Modal ref="modal"
@@ -211,13 +82,15 @@ export default class Map extends Component {
                         lng={center.lng}
                     />
 
-                    {markers.map((val, id) => val.data.lat && val.data.lng && <MarkerComponent
+                    {markers.map((val, id) => val.data.lat && val.data.lng && <Marker
                         key={id}
                         lat={val.data.lat}
                         lng={val.data.lng}
-                        receivedAt={val.receivedAt}
+                        createdAt={val.data.createdAt}
+                        receivedAt={val.data.receivedAt}
                         status={val.data.status}
                         deviceId={val.deviceId}
+                        eventName={val.eventName}
                         showModal={this.showModal.bind(this, val)}
                     />)}
                 </GoogleMapReact>

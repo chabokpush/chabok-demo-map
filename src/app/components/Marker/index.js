@@ -38,13 +38,14 @@ const Digging = ({createdAt}) => (
 
 const Idle = ({createdAt}) => (
     <div className="modal">
-        <div className={createdAt ? 'idle-indicator' : ''}>
+        <div className='idle-indicator'>
             <span>z</span>
             <span>z</span>
             <span>Z</span>
         </div>
     </div>
 );
+
 
 export default class Marker extends Component {
 
@@ -67,13 +68,14 @@ export default class Marker extends Component {
 
 
     render() {
-        const {deviceId, createdAt, showModal, receivedAt} = this.props;
+        const {deviceId, createdAt, showModal, receivedAt, state} = this.props;
         const statusMotion = this.userStatus();
         const now = Date.now();
         return (
             <div
                 onClick={() => showModal()}
                 key={deviceId}
+                className={state === "newDevice" && "scaleIn"}
                 style={{
                     width: 15,
                     height: 15,

@@ -90,7 +90,7 @@ export default class App extends Component {
         if (filterResult.length) {
             arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep({}, val, obj, {t: Date.now()}) : '');
         } else {
-            arr.push(objectAssignDeep(obj, {t: Date.now()}));
+            arr.push(objectAssignDeep(obj, {t: Date.now(), data: {status: 'newDevice'}}));
         }
         this.setState({
             stats: objectAssignDeep({}, this.state.stats, {

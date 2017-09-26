@@ -50,7 +50,8 @@ export default class Footer extends Component {
             <div className="footer">
                 <Slider {...settings} className="slider">
                     {user.map((val, id) =>
-                        val.data && val.data.userInfo && <div className="item" key={id}>
+                        val.data && val.data.userInfo &&
+                        <div className={`${val.data.status === 'newDevice' && "scaleIn"}  item`} key={id}>
                             <img
                                 src={require(`../../assets/images/user/user-${val.data && val.data.userInfo ? val.data.userInfo.avatarIdx : 0}.png`)}/>
                             {val.data && <h3 style={{margin: 0}}>{val.data.userInfo && val.data.userInfo.name}</h3>}

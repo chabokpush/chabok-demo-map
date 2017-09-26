@@ -120,10 +120,11 @@ export default class App extends Component {
     }
 
     selectedUser(deviceId) {
+        this.userMotionTimer && clearTimeout(this.userMotionTimer);
         this.setState({
             selectedUser: deviceId
         });
-        setTimeout(() => {
+        this.userMotionTimer = setTimeout(() => {
             this.setState({
                 selectedUser: ''
             })

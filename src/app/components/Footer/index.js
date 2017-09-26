@@ -3,8 +3,9 @@ import Slider from 'react-slick';
 import TimeAgo from 'timeago-react';
 
 export default class Footer extends Component {
+
     render() {
-        const {data} = this.props;
+        const {data, selectedUser} = this.props;
         const settings = {
             dots: false,
             infinite: false,
@@ -51,7 +52,9 @@ export default class Footer extends Component {
                 <Slider {...settings} className="slider">
                     {user.map((val, id) =>
                         val.data && val.data.userInfo &&
-                        <div className={`${val.data.status === 'newDevice' && "scaleIn"}  item`} key={id}>
+                        <div className={`${val.data.status === 'newDevice' && "scaleIn"}  item`}
+                             key={id}
+                             onClick={() => selectedUser(val.deviceId)}>
                             <img
                                 src={require(`../../assets/images/user/user-${val.data && val.data.userInfo ? val.data.userInfo.avatarIdx : 0}.png`)}/>
                             {val.data && <h3 style={{margin: 0}}>{val.data.userInfo && val.data.userInfo.name}</h3>}

@@ -55,7 +55,7 @@ export default class Map extends Component {
     }
 
     render() {
-        const {markers, zoom, center} = this.props;
+        const {markers, zoom, center, selectedUser} = this.props;
         const {modalState} = this.state;
         return (
             <div className="map">
@@ -83,6 +83,7 @@ export default class Map extends Component {
                     />
 
                     {markers.map((val, id) => (val.data.lat && val.data.lng) && <Marker
+                        selectedUser={selectedUser}
                         key={val.deviceId}
                         lat={val.data.lat}
                         lng={val.data.lng}

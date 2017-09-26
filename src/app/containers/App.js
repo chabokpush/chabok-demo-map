@@ -119,6 +119,17 @@ export default class App extends Component {
         markers ? this.setState({markers: markers}) : null;
     }
 
+    selectedUser(deviceId) {
+        this.setState({
+            selectedUser: deviceId
+        });
+        setTimeout(() => {
+            this.setState({
+                selectedUser: ''
+            })
+        }, 5000)
+    }
+
     render() {
         const props = Object.assign(Object.keys(this.state.center).length && {
                 center: this.state.center,
@@ -126,8 +137,10 @@ export default class App extends Component {
         return (
             <div className="App">
                 <Board data={this.state.stats}/>
-                <Map markers={this.state.markers} {...props}/>
-                <Footer data={this.state.markers}/>
+                <Map markers={this.state.markers}
+                     {...props}
+                     selectedUser={this.state.selectedUser}/>
+                <Footer data={this.state.markers} selectedUser={this.selectedUser.bind(this)}/>
             </div>
         );
     }

@@ -68,14 +68,14 @@ export default class Marker extends Component {
 
 
     render() {
-        const {deviceId, createdAt, showModal, receivedAt, state} = this.props;
+        const {deviceId, createdAt, showModal, receivedAt, status, selectedUser} = this.props;
         const statusMotion = this.userStatus();
         const now = Date.now();
         return (
             <div
                 onClick={() => showModal()}
                 key={deviceId}
-                className={state === "newDevice" && "scaleIn"}
+                className={`${status === 'newDevice' && "scaleIn"} ${(selectedUser && selectedUser === deviceId) && "scaleOut"}`}
                 style={{
                     width: 15,
                     height: 15,

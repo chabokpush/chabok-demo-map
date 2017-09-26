@@ -14,7 +14,7 @@ export default class Qeue {
     }
 
     set(val) {
-        !!val && debounce(this.push(val), 100)
+        !!val && debounce(this.push(val), 500)
     }
 
     get() {

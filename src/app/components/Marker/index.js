@@ -47,58 +47,33 @@ const Idle = ({createdAt}) => (
 );
 
 export default class Marker extends Component {
-    constructor() {
-        super();
-        this.q = new Qeue();
-    }
-
-    // shouldComponentUpdate(nextProps, nextState) {
-    //     const delay = nextProps.status === this.props.status ? 2500 : 500;
-    //     return !(nextProps.eventName === "captainStatus" && nextProps.createdAt < this.props.createdAt + delay);
-    // }
 
     userStatus() {
-        const q = this.q.get() || {};
-        const state = Object.keys(q).length ? q.val : null;
-        switch (state) {
+        const {status, createdAt} = this.props;
+        switch (status) {
             case 'typing':
-                return <Typing key={q.createAt} createdAt={q.createAt}/>;
+                return <Typing key={createdAt} createdAt={createdAt}/>;
                 break;
             case 'sent':
-                return <Sent key={q.createAt} createdAt={q.createAt}/>;
+                return <Sent key={createdAt} createdAt={createdAt}/>;
                 break;
             case 'digging':
-                return <Digging key={q.createAt} createdAt={q.createAt}/>;
+                return <Digging key={createdAt} createdAt={createdAt}/>;
                 break;
-            // case 'idle':
-            //     return <Idle createdAt={createdAt}/>;
-            //     break;
             default:
                 return null;
         }
     }
 
-    setMarkerStatusOnQeue() {
-        const {status} = this.props;
-        this.q.set(status);
-    }
-
-    componentDidUpdate() {
-        this.setMarkerStatusOnQeue();
-    }
-
-    componentDidMount() {
-        this.setMarkerStatusOnQeue();
-    }
 
     render() {
-        const {status, key, deviceId, showModal, createdAt, receivedAt} = this.props;
+        const {deviceId, createdAt, showModal, receivedAt} = this.props;
         const statusMotion = this.userStatus();
         const now = Date.now();
-
-        return ( <div>
+        return (
             <div
-                key={key}
+                onClick={() => showModal()}
+                key={deviceId}
                 style={{
                     width: 15,
                     height: 15,
@@ -108,14 +83,11 @@ export default class Marker extends Component {
                     position: 'relative',
                     zIndex: receivedAt
                 }}>
-                <div onClick={() => showModal()}>
-
-                    {createdAt + 2000 > now && statusMotion}
-                    <img
-                        alt={deviceId}
-                        src={require('../../assets/images/logo.svg')}/>
-                </div>
+                {createdAt + 120000 > now && statusMotion}
+                <img
+                    alt={deviceId}
+                    src={require('../../assets/images/logo.svg')}/>
             </div>
-        </div>)
+        )
     }
 }

@@ -28,9 +28,9 @@ export default class App extends Component {
         return JSON.parse(JSON.stringify(val))
     }
 
-    componentWillUpdate(nextProps, nextState) {
-        nextState.markers.length ? Storage.set(this.options.appId, this.cloneDeep(nextState.markers)) : null;
-        Object.keys(nextState.stats).length ? Storage.set('stats', this.cloneDeep(nextState.stats)) : null;
+    componentDidUpdate() {
+        this.state.markers.length ? Storage.set(this.options.appId, this.cloneDeep(this.state.markers)) : null;
+        Object.keys(this.state.stats).length ? Storage.set('stats', this.cloneDeep(this.state.stats)) : null;
     }
 
     chabok() {
@@ -78,21 +78,22 @@ export default class App extends Component {
     }
 
     setMarkerState(obj) {
-        this.setState((previousState, currentProps) => ({
-            markers: this.upsetArray(previousState.markers, obj)
-        }));
+        this.setState({
+            markers: this.upsetArray(this.cloneDeep(this.state.markers), obj)
+        });
     }
 
     upsetArray(array, obj) {
         const arr = [].concat(array);
+        if (!obj.deviceId) return;
         const filterResult = arr.filter(val => obj.deviceId && val.deviceId === obj.deviceId);
         if (filterResult.length) {
-            arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep(val, obj) : '');
+            arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep({}, val, obj, {t: Date.now()}) : '');
         } else {
-            arr.push(obj);
+            arr.push(objectAssignDeep(obj, {t: Date.now()}));
         }
         this.setState({
-            stats: objectAssignDeep(this.state.stats, {
+            stats: objectAssignDeep({}, this.state.stats, {
                 digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
                 winner: obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
                 captain: arr.length
@@ -116,7 +117,6 @@ export default class App extends Component {
         const markers = Storage.get(this.options.appId);
         const stats = Storage.get('stats');
         markers ? this.setState({markers: markers}) : null;
-        // stats ? this.setState({stats: stats}) : null;
     }
 
     render() {

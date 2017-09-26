@@ -96,10 +96,8 @@ body {
     padding: 5px;
     display: inline-block;
     margin: 0 auto;
-    opacity: 0;
     position: relative;
-    animation: 6s bulge ease-out;
-    animation-iteration-count: 1;
+    animation: 2s bulge infinite ease-out;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
     .modal .typing-indicator span {
       height: 5px;
@@ -199,39 +197,8 @@ body {
     opacity: 1; } }
 
 @keyframes bulge {
-  0% {
-    opacity: 1;
-    transform: scale(1.05); }
-  10% {
-    opacity: 1;
-    transform: scale(1); }
-  20% {
-    opacity: 1;
-    transform: scale(1.05); }
-  30% {
-    opacity: 1;
-    transform: scale(1); }
-  40% {
-    opacity: 1;
-    transform: scale(1.05); }
   50% {
-    opacity: 1;
-    transform: scale(1.05); }
-  60% {
-    opacity: 1;
-    transform: scale(1); }
-  70% {
-    opacity: 1;
-    transform: scale(1.05); }
-  80% {
-    opacity: 1;
-    transform: scale(1); }
-  90% {
-    opacity: 1;
-    transform: scale(1.05); }
-  100% {
-    opacity: 0;
-    transform: scale(1); } }
+    transform: scale(1.05); } }
 
 @keyframes hide {
   0% {

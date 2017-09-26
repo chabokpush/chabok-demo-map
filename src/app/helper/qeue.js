@@ -7,6 +7,7 @@ export default class Qeue {
     }
 
     push(val) {
+        if (this.qeue.length && this.qeue[this.qeue.length - 1].val === val) return;
         this.qeue.push({
             val,
             createAt: Date.now()
@@ -14,7 +15,7 @@ export default class Qeue {
     }
 
     set(val) {
-        !!val && debounce(this.push(val), 500)
+        !!val && debounce(this.push(val), 100)
     }
 
     get() {

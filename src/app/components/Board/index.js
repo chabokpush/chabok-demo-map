@@ -13,10 +13,15 @@ export default class Header extends Component {
                     left: 10,
                     top: 5
                 }}>
-                    <img src={require('../../../logo.svg')} alt=""/>
+                    <img src={require('../../assets/images/adp.png')} alt="" style={{height: 40}}/>
+
 
                 </div>
+
                 <ul className="inline-list stats">
+                    <li>
+                        <img src={require('../../../logo.svg')} alt=""/> چابک
+                    </li>
                     <li>
                         <img src={require('../../assets/images/captain.svg')} alt=""/>
                         {data.captain}
@@ -34,6 +39,7 @@ export default class Header extends Component {
                     </li>
 
                 </ul>
+
             </div>
         )
     }

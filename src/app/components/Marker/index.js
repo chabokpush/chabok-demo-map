@@ -83,7 +83,8 @@ export default class Marker extends Component {
                     background: `#${_.generate(deviceId)}`,
                     padding: 4,
                     position: 'relative',
-                    zIndex: receivedAt
+                    zIndex: receivedAt,
+                    boxShadow:'0 0 4px rgba(0,0,0,0.2)'
                 }}>
                 {createdAt + 120000 > now && statusMotion}
                 <img

@@ -52,7 +52,9 @@ body {
   padding: 0;
   line-height: 60px;
   white-space: nowrap;
-  background: #ffffff; }
+  background: #ffffff;
+  display: inline-block;
+  float: right; }
   .inline-list li {
     display: inline-block;
     height: 50px;
@@ -62,6 +64,10 @@ body {
     position: relative;
     padding: 0 20px 0 100px;
     min-width: 30px; }
+    .inline-list li:first-child {
+      font-size: 21px;
+      color: #005bff;
+      padding: 0 20px 0 20px; }
     .inline-list li img {
       display: inline;
       height: 24px;

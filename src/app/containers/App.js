@@ -47,6 +47,10 @@ export default class App extends Component {
         // push.on('connecting', _ => this.setState({
         //     chabok: 'connecting'
         // }));
+        push.on('connecting', _ => console.log('Reconnecting'))
+        push.on('disconnected', _ => console.log('offline'))
+        push.on('closed', _ => console.log('disconnected'))
+
         push.on('connected', _ => {
             console.log('Connected');
             this.setState({

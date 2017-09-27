@@ -54,6 +54,11 @@ export default class App extends Component {
             .map(user => user && user.deviceId)
             .filter(user => !!user);
 
+        console.log('------------------------------------');
+        console.log(unregisteredUser)
+        console.log('------------------------------------------');
+
+
         unregisteredUser.length && this.push.getInstallations(unregisteredUser)
             .then(items => {
                 getUnregisteredUser && getUnregisteredUser.map(user => {
@@ -96,14 +101,17 @@ export default class App extends Component {
                     live: false
                 }]);
             push.on('geo', geoEvent => {
+                this.fixUserBrokenData();
                 console.log('Geo Event ', geoEvent);
                 this.setMarkerState(geoEvent);
             });
             push.on('treasure', treasureEvent => {
+                this.fixUserBrokenData();
                 console.log('treasure ', treasureEvent);
                 this.setMarkerState(treasureEvent);
             });
             push.on('captainStatus', status => {
+                this.fixUserBrokenData();
                 console.log('captainStatus ', status);
                 this.setMarkerState(status);
             });
@@ -134,8 +142,8 @@ export default class App extends Component {
         }
         this.setState({
             stats: objectAssignDeep({}, this.state.stats, {
-                digging: obj && obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
-                winner: obj && obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
+                digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
+                winner: obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
                 captain: this.getValidUserCount()
             })
         });
@@ -154,7 +162,6 @@ export default class App extends Component {
             this.setState({center: {lat: +centerLocationObject[0], lng: +centerLocationObject[1]}});
         }
         this.getStoreData();
-        this.fixUserBrokenData();
     }
 
     getStoreData() {

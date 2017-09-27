@@ -38,15 +38,15 @@ export default class App extends Component {
         this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(this.options);
         push.on('registered', deviceId => console.log('DeviceId ', deviceId));
-        push.on('offline', _ => this.setState({
-            chabok: 'offline'
-        }));
-        push.on('disconnected', _ => this.setState({
-            chabok: 'offline'
-        }));
-        push.on('connecting', _ => this.setState({
-            chabok: 'connecting'
-        }));
+        // push.on('offline', _ => this.setState({
+        //     chabok: 'offline'
+        // }));
+        // push.on('disconnected', _ => this.setState({
+        //     chabok: 'offline'
+        // }));
+        // push.on('connecting', _ => this.setState({
+        //     chabok: 'connecting'
+        // }));
         push.on('connected', _ => {
             console.log('Connected');
             this.setState({

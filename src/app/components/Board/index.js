@@ -7,6 +7,7 @@ export default class Header extends Component {
     render() {
         const {data,chabok} = this.props;
         return (
+
             <div style={STYLE.board}>
                 <div style={{
                     position: 'absolute',
@@ -14,27 +15,24 @@ export default class Header extends Component {
                     top: 5
                 }}>
                     <img src={require('../../assets/images/adp.png')} alt="" style={{height: 40}}/>
-
-
                 </div>
-
                 <ul className="inline-list stats">
                     <li>
                         <img src={require('../../../logo.svg')} alt="" style={{height: 40}}/> چابک
                     </li>
-                    <li>
+                    <li className="invisible-mobile">
                         <img src={require('../../assets/images/captain.svg')} alt=""/>
-                        {data.captain}
+                        {data && data.captain}
                         <span>کاپیتان</span>
                     </li>
-                    <li>
+                    <li className="invisible-mobile">
                         <img src={require('../../assets/images/kolang.svg')} alt=""/>
-                        {data.digging}
+                        {data && data.digging}
                         <span>حفاری</span>
                     </li>
-                    <li>
+                    <li className="invisible-mobile">
                         <img src={require('../../assets/images/treasure.svg')} alt=""/>
-                        {data.winner}
+                        {data && data.winner}
                         <span>گنچ پیدا شده</span>
                     </li>
 

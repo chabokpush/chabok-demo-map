@@ -23,33 +23,55 @@ export default class App extends Component {
                 captain: 0
             }
         };
+
+        this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
+        this.push = new chabokpush.Chabok(this.options);
+        this.chabok();
     }
 
     cloneDeep(val) {
-        return JSON.parse(JSON.stringify(val))
+        return val ? JSON.parse(JSON.stringify(val)) : {}
     }
 
     componentDidUpdate() {
-        this.state.markers.length ? Storage.set(this.options.appId, this.cloneDeep(this.state.markers)) : null;
-        Object.keys(this.state.stats).length ? Storage.set('stats', this.cloneDeep(this.state.stats)) : null;
+        this.state.markers && this.state.markers.length ? Storage.set(this.options.appId, this.cloneDeep(this.state.markers)) : null;
+        this.state.stats && Object.keys(this.state.stats).length ? Storage.set('stats', this.cloneDeep(this.state.stats)) : null;
+    }
+
+    getUnregisteredUser() {
+        const users = Storage.get(this.options.appId) || [];
+        return users.map(user => user.data && !user.data.userInfo ? user : null);
+    }
+
+    getValidUserCount() {
+        return this.state.markers.filter(user => user.data && user.data.userInfo).length;
+
+    }
+
+    fixUserBrokenData() {
+        const getUnregisteredUser = this.getUnregisteredUser();
+        const unregisteredUser = getUnregisteredUser
+            .map(user => user && user.deviceId)
+            .filter(user => !!user);
+
+        unregisteredUser.length && this.push.getInstallations(unregisteredUser)
+            .then(items => {
+                getUnregisteredUser && getUnregisteredUser.map(user => {
+                    items &&
+                    items
+                        .map(item => {
+                            (user && user.deviceId === item.id) && this.setMarkerState(objectAssignDeep(user, {data: item}))
+                        })
+                });
+            });
     }
 
     chabok() {
-        this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
-        const push = new chabokpush.Chabok(this.options);
+        const push = this.push;
         push.on('registered', deviceId => console.log('DeviceId ', deviceId));
-        // push.on('offline', _ => this.setState({
-        //     chabok: 'offline'
-        // }));
-        // push.on('disconnected', _ => this.setState({
-        //     chabok: 'offline'
-        // }));
-        // push.on('connecting', _ => this.setState({
-        //     chabok: 'connecting'
-        // }));
-        push.on('connecting', _ => console.log('Reconnecting'))
-        push.on('disconnected', _ => console.log('offline'))
-        push.on('closed', _ => console.log('disconnected'))
+        push.on('connecting', _ => console.log('Reconnecting'));
+        push.on('disconnected', _ => console.log('offline'));
+        push.on('closed', _ => console.log('disconnected'));
 
         push.on('connected', _ => {
             console.log('Connected');
@@ -95,6 +117,7 @@ export default class App extends Component {
     }
 
     setMarkerState(obj) {
+        console.log(obj);
         this.setState({
             markers: this.upsetArray(this.cloneDeep(this.state.markers), obj)
         });
@@ -111,9 +134,9 @@ export default class App extends Component {
         }
         this.setState({
             stats: objectAssignDeep({}, this.state.stats, {
-                digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
-                winner: obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
-                captain: arr.length
+                digging: obj && obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
+                winner: obj && obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
+                captain: this.getValidUserCount()
             })
         });
         return arr;
@@ -124,16 +147,21 @@ export default class App extends Component {
     }
 
     componentDidMount() {
-        this.chabok();
         const queryStringObject = this.getQueryStringObject();
         this.options = 'dev' in queryStringObject ? config.DEVELOPMENT : config.PRODUCTION;
         if ('location' in queryStringObject) {
             const centerLocationObject = queryStringObject.location.split(',');
             this.setState({center: {lat: +centerLocationObject[0], lng: +centerLocationObject[1]}});
         }
-        const markers = Storage.get(this.options.appId);
-        const stats = Storage.get('stats');
-        markers ? this.setState({markers: markers}) : null;
+        this.getStoreData();
+        this.fixUserBrokenData();
+    }
+
+    getStoreData() {
+        this.setState({
+            markers: Storage.get(this.options.appId) || [],
+            stats: Storage.get('stats') || this.state.stats
+        })
     }
 
     selectedUser(deviceId) {
@@ -145,7 +173,7 @@ export default class App extends Component {
             this.setState({
                 selectedUser: ''
             })
-        }, 5000)
+        }, 2000)
     }
 
     render() {

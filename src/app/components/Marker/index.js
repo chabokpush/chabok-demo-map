@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Qeue from '../../helper/qeue';
 
 const _ = require('string-to-color');
 

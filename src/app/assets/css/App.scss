@@ -75,7 +75,7 @@ body {
     position: relative;
     padding: 0 20px 0 100px;
     min-width: 30px;
-    &:first-child{
+    &:first-child {
       font-size: 21px;
       color: #005bff;
       padding: 0 20px 0 20px;
@@ -228,6 +228,12 @@ body {
     }
   }
 
+}
+
+.invisible-mobile {
+  @media (max-width: 900px) {
+    display: none !important;
+  }
 }
 
 @keyframes waver {

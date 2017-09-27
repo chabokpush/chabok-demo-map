@@ -197,6 +197,10 @@ body {
       transform: rotate(-25deg);
       animation: 1s waver infinite ease; }
 
+@media (max-width: 900px) {
+  .invisible-mobile {
+    display: none !important; } }
+
 @keyframes waver {
   0% {
     transform: rotate(-25deg); }

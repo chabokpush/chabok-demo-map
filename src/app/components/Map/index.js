@@ -82,7 +82,7 @@ export default class Map extends Component {
                         lng={center.lng}
                     />
 
-                    {markers.map((val, id) => (val.data.lat && val.data.lng) && <Marker
+                    {markers && markers.map((val, id) => (val.data.lat && val.data.lng && val.data.userInfo) && <Marker
                         selectedUser={selectedUser}
                         key={val.deviceId}
                         lat={val.data.lat}

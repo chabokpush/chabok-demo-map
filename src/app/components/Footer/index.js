@@ -46,12 +46,12 @@ export default class Footer extends Component {
             swipe: true,
             touchMove: true
         };
-        const user = data.sort((a, b) => b.receivedAt - a.receivedAt);
+        const user = data && data.sort((a, b) => b.receivedAt - a.receivedAt);
         return (
             <div className="footer">
                 <Slider {...settings} className="slider">
-                    {user.map((val, id) =>
-                        val.data && val.data.userInfo &&
+                    {user && user.map((val, id) =>
+                        val.data && val.data.lat && val.data.lng && val.data.userInfo &&
                         <div className={`${val.data.status === 'newDevice' && "scaleIn"}  item`}
                              key={id}
                              onClick={() => selectedUser(val.deviceId)}>

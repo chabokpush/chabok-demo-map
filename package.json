@@ -1,6 +1,6 @@
 {
   "name": "real-time-map",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "private": true,
   "dependencies": {
     "boron": "^0.2.3",

@@ -5,7 +5,7 @@ import Lottie from 'react-lottie';
 
 export default class Header extends Component {
     render() {
-        const {data} = this.props;
+        const {data,chabok} = this.props;
         return (
             <div style={STYLE.board}>
                 <div style={{
@@ -20,7 +20,7 @@ export default class Header extends Component {
 
                 <ul className="inline-list stats">
                     <li>
-                        <img src={require('../../../logo.svg')} alt=""/> چابک
+                        <img src={require('../../../logo.svg')} alt="" style={{height: 40}}/> چابک
                     </li>
                     <li>
                         <img src={require('../../assets/images/captain.svg')} alt=""/>
@@ -39,7 +39,14 @@ export default class Header extends Component {
                     </li>
 
                 </ul>
-
+                <div style={{
+                    position: 'absolute',
+                    height:2,
+                    transition: 'background-color 250ms linear',
+                    background: chabok==='offline' ? '#FE2851' : chabok==='Connected' ? '#4998FF' : '#F5A623',
+                    width:'100%',
+                    bottom:0
+                }}/>
             </div>
         )
     }
@@ -57,6 +64,7 @@ const STYLE = {
         top: 0,
         left: 0,
         borderRadius: 5,
-        opacity: 1
+        opacity: 1,
+        overflow:'hidden'
     }
 };

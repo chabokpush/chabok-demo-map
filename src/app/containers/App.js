@@ -16,6 +16,7 @@ export default class App extends Component {
         this.state = {
             markers: [],
             center: {},
+            chabok: 'offline',
             stats: {
                 digging: 0,
                 winner: 0,
@@ -37,12 +38,21 @@ export default class App extends Component {
         this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
         const push = new chabokpush.Chabok(this.options);
         push.on('registered', deviceId => console.log('DeviceId ', deviceId));
+        push.on('offline', deviceId => this.setState({
+            chabok: 'offline'
+        }));
+        push.on('connecting', deviceId => this.setState({
+            chabok: 'connecting'
+        }));
         push.on('connected', _ => {
             console.log('Connected');
+            this.setState({
+                chabok: 'Connected'
+            });
             push.enableEventDelivery([
                 {
                     name: 'treasure',
-                    live: true
+                    live: false
                 },
                 {
                     name: 'captainStatus',
@@ -137,7 +147,7 @@ export default class App extends Component {
             });
         return (
             <div className="App">
-                <Board data={this.state.stats}/>
+                <Board data={this.state.stats} chabok={this.state.chabok}/>
                 <Map markers={this.state.markers}
                      {...props}
                      selectedUser={this.state.selectedUser}/>

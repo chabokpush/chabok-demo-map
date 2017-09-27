@@ -1295,9 +1295,9 @@ center-align@^0.1.1:
     align-text "^0.1.3"
     lazy-cache "^1.0.3"
 
-chabokpush@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/chabokpush/-/chabokpush-0.1.3.tgz#cc00359e2fc479ede4014e5b037ce44fda912fd4"
+chabokpush@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/chabokpush/-/chabokpush-0.1.4.tgz#9fb8b9a1f86fea044adffeb04c3b1889f7e16ff9"
 
 chalk@1.1.3, chalk@^1.0.0, chalk@^1.1.0, chalk@^1.1.1, chalk@^1.1.3:
   version "1.1.3"

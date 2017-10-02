@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import GoogleMapReact from 'google-map-react';
-import * as trophy from '../../assets/animation/trophy.json'
-import * as typing from '../../assets/animation/data.json'
 import * as animationData from '../../assets/animation/location.json'
 import Marker from '../../components/Marker'
 import Lottie from 'react-lottie';
@@ -62,6 +60,7 @@ export default class Map extends Component {
                 <Modal ref="modal"
                        contentStyle={{padding: 30, textAlign: 'center'}}>
                     <img
+                        alt="user"
                         src={require(`../../assets/images/user/user-${modalState.data && modalState.data.userInfo ? modalState.data.userInfo.avatarIdx : 0}.png`)}/>
                     <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h2>
                     <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.userId}</h2>

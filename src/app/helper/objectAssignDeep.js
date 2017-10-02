@@ -1,5 +1,3 @@
-'use strict';
-
 /*
  * OBJECT ASSIGN DEEP
  * Allows deep cloning of plain objects that contain primitives, nested plain objects, or nested plain arrays.

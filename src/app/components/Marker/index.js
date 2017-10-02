@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 const _ = require('string-to-color');
 
 const Typing = ({createdAt}) => (
@@ -16,6 +15,7 @@ const Sent = ({createdAt}) => (
     <div className="modal">
         <div className="sent-indicator" style={{zIndex: createdAt}}>
             <img
+                alt="sent"
                 src={require('../../assets/images/double-check.svg')}
                 width={15}
             />
@@ -28,6 +28,7 @@ const Digging = ({createdAt}) => (
 
         <div className="dig-indicator" style={{zIndex: createdAt}}>
             <img
+                alt="digging"
                 src={require('../../assets/images/dig.svg')}
                 width={15}
             />
@@ -35,16 +36,15 @@ const Digging = ({createdAt}) => (
     </div>
 );
 
-const Idle = ({createdAt}) => (
-    <div className="modal">
-        <div className='idle-indicator'>
-            <span>z</span>
-            <span>z</span>
-            <span>Z</span>
-        </div>
-    </div>
-);
-
+// const Idle = ({createdAt}) => (
+//     <div className="modal">
+//         <div className='idle-indicator'>
+//             <span>z</span>
+//             <span>z</span>
+//             <span>Z</span>
+//         </div>
+//     </div>
+// );
 
 export default class Marker extends Component {
 
@@ -67,9 +67,8 @@ export default class Marker extends Component {
 
 
     render() {
-        const {deviceId, createdAt, showModal, receivedAt, status, selectedUser} = this.props;
+        const {deviceId, showModal, receivedAt, status, selectedUser} = this.props;
         const statusMotion = this.userStatus();
-        const now = Date.now();
         return (
             <div
                 onClick={() => showModal()}

@@ -34,8 +34,8 @@ export default class App extends Component {
     }
 
     componentDidUpdate() {
-        this.state.markers && this.state.markers.length ? Storage.set(this.options.appId, this.cloneDeep(this.state.markers)) : null;
-        this.state.stats && Object.keys(this.state.stats).length ? Storage.set('stats', this.cloneDeep(this.state.stats)) : null;
+        this.state.markers && this.state.markers.length && Storage.set(this.options.appId, this.cloneDeep(this.state.markers));
+        this.state.stats && Object.keys(this.state.stats).length && Storage.set('stats', this.cloneDeep(this.state.stats));
     }
 
     getUnregisteredUser() {

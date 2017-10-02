@@ -1,7 +1,4 @@
 import React, {Component} from 'react';
-import * as animationData from '../../assets/animation/muzli.json'
-import Lottie from 'react-lottie';
-
 
 export default class Header extends Component {
     render() {

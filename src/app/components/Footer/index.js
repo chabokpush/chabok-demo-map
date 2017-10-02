@@ -56,11 +56,12 @@ export default class Footer extends Component {
                              key={id}
                              onClick={() => selectedUser(val.deviceId)}>
                             <img
-                                src={require(`../../assets/images/user/user-${val.data && val.data.userInfo ? val.data.userInfo.avatarIdx : 0}.png`)}/>
-                            {val.data && <h3 style={{margin: 0}}>{val.data.userInfo && val.data.userInfo.name}</h3>}
+                                alt={val.data.userInfo.name}
+                                src={require(`../../assets/images/user/user-${val.data.userInfo.avatarIdx || 0}.png`)}/>
+                            <h3 style={{margin: 0}}>{val.data.userInfo.name}</h3>
                             <TimeAgo
                                 style={{direction: 'rtl', display: 'inline-block'}}
-                                datetime={val.receivedAt}
+                                datetime={val.createdAt}
                                 locale='fa'/>
                         </div>
                     )}

@@ -4,6 +4,17 @@ import TimeAgo from 'timeago-react';
 
 export default class Footer extends Component {
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.data !== nextProps.data) {
+            return true;
+        }
+        if (this.props.selectedUser !== nextProps.selectedUser) {
+            return true;
+        }
+
+        return false;
+    }
+
     render() {
         const {data, selectedUser} = this.props;
         const settings = {

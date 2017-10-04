@@ -53,12 +53,6 @@ export default class App extends Component {
         const unregisteredUser = getUnregisteredUser
             .map(user => user && user.deviceId)
             .filter(user => !!user);
-
-        console.log('------------------------------------');
-        console.log(unregisteredUser)
-        console.log('------------------------------------------');
-
-
         unregisteredUser.length && this.push.getInstallations(unregisteredUser)
             .then(items => {
                 getUnregisteredUser && getUnregisteredUser.map(user => {
@@ -125,7 +119,6 @@ export default class App extends Component {
     }
 
     setMarkerState(obj) {
-        console.log(obj);
         this.setState({
             markers: this.upsetArray(this.cloneDeep(this.state.markers), obj)
         });

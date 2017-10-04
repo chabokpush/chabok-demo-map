@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import * as animationData from '../../assets/animation/location.json'
 import Marker from '../../components/Marker'
 import Lottie from 'react-lottie';
-const Modal = require('boron/OutlineModal');
+import SkyLight from 'react-skylight';
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
 
@@ -57,16 +57,19 @@ export default class Map extends Component {
         const {modalState} = this.state;
         return (
             <div className="map">
-                <Modal ref="modal"
-                       contentStyle={{padding: 30, textAlign: 'center'}}>
-                    <img
-                        alt="user"
-                        src={require(`../../assets/images/user/user-${modalState.data && modalState.data.userInfo ? modalState.data.userInfo.avatarIdx : 0}.png`)}/>
-                    <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h2>
-                    <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.userId}</h2>
-                    <h2>{modalState.deviceId}</h2>
-                    <button onClick={this.hideModal.bind(this)}>بستن</button>
-                </Modal>
+                <SkyLight ref="modal"
+                          hideOnOverlayClicked
+                          className={"modal"}>
+                    <div style={{padding: 30, textAlign: 'center'}}>
+                        <img
+                            alt="user"
+                            src={require(`../../assets/images/user/user-${modalState.data && modalState.data.userInfo ? modalState.data.userInfo.avatarIdx : 0}.png`)}/>
+                        <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h2>
+                        <h2>{modalState.data && modalState.data.userId}</h2>
+                        <h2>{modalState.data && modalState.data.deviceModel}</h2>
+                        <button onClick={this.hideModal.bind(this)}>بستن</button>
+                    </div>
+                </SkyLight>
                 <GoogleMapReact
                     bootstrapURLKeys={{
                         key: API_KEY,

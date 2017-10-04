@@ -1,8 +1,19 @@
 import React, {Component} from 'react';
 
 export default class Header extends Component {
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.data !== nextProps.data) {
+            return true;
+        }
+        if (this.props.chabok !== nextProps.chabok) {
+            return true;
+        }
+
+        return false;
+    }
+
     render() {
-        const {data,chabok} = this.props;
+        const {data, chabok} = this.props;
         return (
 
             <div style={STYLE.board}>
@@ -36,18 +47,17 @@ export default class Header extends Component {
                 </ul>
                 <div style={{
                     position: 'absolute',
-                    height:2,
+                    height: 2,
                     transition: 'background-color 250ms linear',
-                    background: chabok==='offline' ? '#FE2851' : chabok==='Connected' ? '#4998FF' : '#F5A623',
-                    width:'100%',
-                    bottom:0
+                    background: chabok === 'offline' ? '#FE2851' : chabok === 'Connected' ? '#4998FF' : '#F5A623',
+                    width: '100%',
+                    bottom: 0
                 }}/>
             </div>
         )
     }
 
 }
-
 
 const STYLE = {
     board: {
@@ -60,6 +70,6 @@ const STYLE = {
         left: 0,
         borderRadius: 5,
         opacity: 1,
-        overflow:'hidden'
+        overflow: 'hidden'
     }
 };

@@ -48,6 +48,15 @@ const Digging = ({createdAt}) => (
 
 export default class Marker extends Component {
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.status !== nextProps.status) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     userStatus() {
         const {status, createdAt} = this.props;
         switch (status) {
@@ -82,7 +91,7 @@ export default class Marker extends Component {
                     padding: 4,
                     position: 'relative',
                     zIndex: receivedAt,
-                    boxShadow:'0 0 4px rgba(0,0,0,0.2)'
+                    boxShadow: '0 0 4px rgba(0,0,0,0.2)'
                 }}>
                 {statusMotion}
                 <img

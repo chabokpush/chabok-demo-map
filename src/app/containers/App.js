@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import '../assets/css/App.css';
 import Map from '../components/Map'
 import Board from '../components/Board'
 import Footer from '../components/Footer'
@@ -8,6 +7,7 @@ import Storage from '../helper/Storage';
 import config from '../config/chabok.json';
 import queryString from 'query-string';
 const objectAssignDeep = require(`../helper/objectAssignDeep`);
+const asyncTimedCargo = require('async-timed-cargo');
 
 export default class App extends Component {
 
@@ -27,6 +27,7 @@ export default class App extends Component {
         this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
         this.push = new chabokpush.Chabok(this.options);
         this.chabok();
+        this.cargoHandler(25, 500)
     }
 
     cloneDeep(val) {
@@ -59,7 +60,7 @@ export default class App extends Component {
                     items &&
                     items
                         .map(item => {
-                            (user && user.deviceId === item.id) && this.setMarkerState(objectAssignDeep(user, {data: item}))
+                            (user && user.deviceId === item.id) && this.cargo.push(objectAssignDeep(user, {data: item}))
                         })
                 });
             });
@@ -95,23 +96,21 @@ export default class App extends Component {
                     live: false
                 }]);
             push.on('geo', geoEvent => {
-                this.fixUserBrokenData();
                 console.log('Geo Event ', geoEvent);
-                this.setMarkerState(geoEvent);
+                this.cargo.push(geoEvent);
             });
             push.on('treasure', treasureEvent => {
-                this.fixUserBrokenData();
                 console.log('treasure ', treasureEvent);
-                this.setMarkerState(treasureEvent);
+                this.cargo.push(treasureEvent);
             });
             push.on('captainStatus', status => {
-                this.fixUserBrokenData();
                 console.log('captainStatus ', status);
-                this.setMarkerState(status);
+                this.cargo.push(status);
+
             });
             push.on('newDevice', devices => {
                 console.log('newDevice ', devices);
-                this.setMarkerState(devices);
+                this.cargo.push(devices);
             });
         });
         push.on('message', msg => console.log('Message ', msg))
@@ -127,12 +126,17 @@ export default class App extends Component {
     upsetArray(array, obj) {
         const arr = [].concat(array);
         if (!obj.deviceId) return;
-        const filterResult = arr.filter(val => obj.deviceId && val.deviceId === obj.deviceId);
+        const filterResult = arr ? arr.filter(val => val.deviceId && val.deviceId === obj.deviceId) : [];
         if (filterResult.length) {
             arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep({}, val, obj, {t: Date.now()}) : '');
         } else {
             arr.push(objectAssignDeep(obj, {t: Date.now(), data: {status: 'newDevice'}}));
         }
+        this.updateBoard(obj);
+        return arr;
+    }
+
+    updateBoard(obj) {
         this.setState({
             stats: objectAssignDeep({}, this.state.stats, {
                 digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
@@ -140,12 +144,28 @@ export default class App extends Component {
                 captain: this.getValidUserCount()
             })
         });
-        return arr;
     }
 
     getQueryStringObject() {
         return queryString.parse(window.location.search)
     }
+
+    cargoHandler(count, delay) {
+        this.cargo = asyncTimedCargo((tasks, callback) => {
+            this.fixUserBrokenDataTimer && clearTimeout(this.fixUserBrokenDataTimer);
+            const newState = tasks.length &&
+                tasks.reduce((state, task) =>
+                task &&
+                task.deviceId &&
+                this.upsetArray(state || [], task), this.state.markers);
+            this.setState({
+                markers: newState
+            });
+            this.fixUserBrokenDataTimer = setTimeout(() => this.fixUserBrokenData(), 10000);
+            return callback();
+        }, count, delay);
+    }
+
 
     componentDidMount() {
         const queryStringObject = this.getQueryStringObject();

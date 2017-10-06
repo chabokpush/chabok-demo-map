@@ -48,15 +48,6 @@ const Digging = ({createdAt}) => (
 
 export default class Marker extends Component {
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.status !== nextProps.status) {
-            return true;
-        }
-
-        return false;
-    }
-
-
     userStatus() {
         const {status, createdAt} = this.props;
         switch (status) {

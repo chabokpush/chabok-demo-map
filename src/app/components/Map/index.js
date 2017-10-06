@@ -6,7 +6,6 @@ import Lottie from 'react-lottie';
 import SkyLight from 'react-skylight';
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
-
 const CompanyLocation = () => (
     <div style={{
         position: 'absolute',
@@ -40,7 +39,6 @@ export default class Map extends Component {
         }
     }
 
-
     showModal(val) {
         this.refs.modal.show();
         this.setState({
@@ -57,17 +55,40 @@ export default class Map extends Component {
         const {modalState} = this.state;
         return (
             <div className="map">
-                <SkyLight ref="modal"
-                          hideOnOverlayClicked
-                          className={"modal"}>
+                <SkyLight
+                    dialogStyles={{
+                        width: '300px',
+                        height: '400px',
+                        position: 'fixed',
+                        top: '50%',
+                        left: '50%',
+                        marginTop: '-200px',
+                        marginLeft: '-150px',
+                        backgroundColor: '#fff',
+                        borderRadius: '4px',
+                        zIndex: 100,
+                        padding: '15px',
+                        boxShadow: '0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28)'
+                    }}
+                    closeButtonStyle={{
+                        display: 'none'
+                    }}
+                    ref="modal"
+                    hideOnOverlayClicked>
                     <div style={{padding: 30, textAlign: 'center'}}>
                         <img
                             alt="user"
                             src={require(`../../assets/images/user/user-${modalState.data && modalState.data.userInfo ? modalState.data.userInfo.avatarIdx : 0}.png`)}/>
-                        <h2>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h2>
+                        <h1>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h1>
                         <h2>{modalState.data && modalState.data.userId}</h2>
-                        <h2>{modalState.data && modalState.data.deviceModel}</h2>
-                        <button onClick={this.hideModal.bind(this)}>بستن</button>
+                        <h3>{modalState.data && modalState.data.deviceModel}</h3>
+                        <button style={{
+                            padding: '5px 10px',
+                            border: 'none',
+                            background: '#fff',
+                            fontSize: '12px'
+                        }} onClick={this.hideModal.bind(this)}>بستن
+                        </button>
                     </div>
                 </SkyLight>
                 <GoogleMapReact

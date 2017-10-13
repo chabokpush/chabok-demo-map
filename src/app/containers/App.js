@@ -7,7 +7,7 @@ import Storage from '../helper/Storage';
 import {size} from '../helper/Size';
 import config from '../config/chabok.json';
 import queryString from 'query-string';
-import _ from "lodash";
+import _ from "lodash/collection";
 const objectAssignDeep = require(`../helper/objectAssignDeep`);
 const asyncTimedCargo = require('async-timed-cargo');
 
@@ -30,9 +30,13 @@ export default class App extends Component {
         this.cargoHandler(25, 500)
     }
 
+    cloneDeep(val) {
+        return JSON.parse(JSON.stringify(val))
+    }
+
     componentDidUpdate() {
-        this.state.markers && size(this.state.markers) && Storage.set(this.options.appId, _.cloneDeep(this.state.markers));
-        this.state.stats && size(this.state.stats) && Storage.set('stats', _.cloneDeep(this.state.stats));
+        this.state.markers && size(this.state.markers) && Storage.set(this.options.appId, this.cloneDeep(this.state.markers));
+        this.state.stats && size(this.state.stats) && Storage.set('stats', this.cloneDeep(this.state.stats));
     }
 
     getUnregisteredUser() {
@@ -97,7 +101,7 @@ export default class App extends Component {
 
     setMarkerState(obj) {
         this.setState({
-            markers: this.upsetArray(_.cloneDeep(this.state.markers), obj)
+            markers: this.upsetArray(this.cloneDeep(this.state.markers), obj)
         });
     }
 

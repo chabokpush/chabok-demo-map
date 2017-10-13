@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import * as animationData from '../../assets/animation/location.json'
 import Marker from '../../components/Marker'
 import Lottie from 'react-lottie';
-import _ from "lodash";
+import _ from "lodash/collection";
 import SkyLight from 'react-skylight';
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 

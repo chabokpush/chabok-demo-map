@@ -4,9 +4,9 @@ const _ = require('string-to-color');
 const Typing = ({createdAt}) => (
     <div className="modal" style={{zIndex: createdAt}}>
         <div className="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span/>
+            <span/>
+            <span/>
         </div>
     </div>
 );
@@ -25,7 +25,6 @@ const Sent = ({createdAt}) => (
 
 const Digging = ({createdAt}) => (
     <div className="modal">
-
         <div className="dig-indicator" style={{zIndex: createdAt}}>
             <img
                 alt="digging"
@@ -36,15 +35,6 @@ const Digging = ({createdAt}) => (
     </div>
 );
 
-// const Idle = ({createdAt}) => (
-//     <div className="modal">
-//         <div className='idle-indicator'>
-//             <span>z</span>
-//             <span>z</span>
-//             <span>Z</span>
-//         </div>
-//     </div>
-// );
 
 export default class Marker extends Component {
 
@@ -66,8 +56,16 @@ export default class Marker extends Component {
     }
 
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.createdAt + 10000 > Date.now()) {
+            return true;
+        }
+        return false;
+    }
+
+
     render() {
-        const {deviceId, showModal, receivedAt, status, selectedUser} = this.props;
+        const {deviceId, showModal, receivedAt, createdAt, status, selectedUser} = this.props;
         const statusMotion = this.userStatus();
         return (
             <div
@@ -84,7 +82,7 @@ export default class Marker extends Component {
                     zIndex: receivedAt,
                     boxShadow: '0 0 4px rgba(0,0,0,0.2)'
                 }}>
-                {statusMotion}
+                {createdAt + 5000 > Date.now() && statusMotion}
                 <img
                     alt={deviceId}
                     src={require('../../assets/images/logo.svg')}/>

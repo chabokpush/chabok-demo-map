@@ -5,11 +5,9 @@ export default class Header extends Component {
         if (this.props.data !== nextProps.data) {
             return true;
         }
-        if (this.props.chabok !== nextProps.chabok) {
-            return true;
-        }
+        return this.props.chabok !== nextProps.chabok;
 
-        return false;
+
     }
 
     render() {

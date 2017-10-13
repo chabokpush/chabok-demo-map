@@ -4,13 +4,14 @@ import Board from '../components/Board'
 import Footer from '../components/Footer'
 import chabokpush from 'chabokpush';
 import Storage from '../helper/Storage';
+import {size} from '../helper/Size';
 import config from '../config/chabok.json';
 import queryString from 'query-string';
+import _ from "lodash";
 const objectAssignDeep = require(`../helper/objectAssignDeep`);
 const asyncTimedCargo = require('async-timed-cargo');
 
 export default class App extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -23,48 +24,26 @@ export default class App extends Component {
                 captain: 0
             }
         };
-
         this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
         this.push = new chabokpush.Chabok(this.options);
         this.chabok();
         this.cargoHandler(25, 500)
     }
 
-    cloneDeep(val) {
-        return val ? JSON.parse(JSON.stringify(val)) : {}
-    }
-
     componentDidUpdate() {
-        this.state.markers && this.state.markers.length && Storage.set(this.options.appId, this.cloneDeep(this.state.markers));
-        this.state.stats && Object.keys(this.state.stats).length && Storage.set('stats', this.cloneDeep(this.state.stats));
+        this.state.markers && size(this.state.markers) && Storage.set(this.options.appId, _.cloneDeep(this.state.markers));
+        this.state.stats && size(this.state.stats) && Storage.set('stats', _.cloneDeep(this.state.stats));
     }
 
     getUnregisteredUser() {
         const users = Storage.get(this.options.appId) || [];
-        return users.map(user => user.data && !user.data.userInfo ? user : null);
+        return _.map(users, user => user.data && !user.data.userInfo ? user : null);
     }
 
     getValidUserCount() {
-        return this.state.markers.filter(user => user.data && user.data.userInfo).length;
-
+        return size(_.filter(this.state.markers, user => user.data && user.data.userInfo));
     }
 
-    fixUserBrokenData() {
-        const getUnregisteredUser = this.getUnregisteredUser();
-        const unregisteredUser = getUnregisteredUser
-            .map(user => user && user.deviceId)
-            .filter(user => !!user);
-        unregisteredUser.length && this.push.getInstallations(unregisteredUser)
-            .then(items => {
-                getUnregisteredUser && getUnregisteredUser.map(user => {
-                    items &&
-                    items
-                        .map(item => {
-                            (user && user.deviceId === item.id) && this.cargo.push(objectAssignDeep(user, {data: item}))
-                        })
-                });
-            });
-    }
 
     chabok() {
         const push = this.push;
@@ -72,7 +51,6 @@ export default class App extends Component {
         push.on('connecting', _ => console.log('Reconnecting'));
         push.on('disconnected', _ => console.log('offline'));
         push.on('closed', _ => console.log('disconnected'));
-
         push.on('connected', _ => {
             console.log('Connected');
             this.setState({
@@ -119,18 +97,18 @@ export default class App extends Component {
 
     setMarkerState(obj) {
         this.setState({
-            markers: this.upsetArray(this.cloneDeep(this.state.markers), obj)
+            markers: this.upsetArray(_.cloneDeep(this.state.markers), obj)
         });
     }
 
     upsetArray(array, obj) {
         const arr = [].concat(array);
         if (!obj.deviceId) return;
-        const filterResult = arr ? arr.filter(val => val.deviceId && val.deviceId === obj.deviceId) : [];
-        if (filterResult.length) {
-            arr.map((val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep({}, val, obj, {t: Date.now()}) : '');
+        const filterResult = arr ? _.filter(arr, val => val.deviceId && val.deviceId === obj.deviceId) : [];
+        if (size(filterResult)) {
+            _.map(arr, (val, index) => val.deviceId === obj.deviceId ? arr[index] = objectAssignDeep({}, val, obj) : '');
         } else {
-            arr.push(objectAssignDeep(obj, {t: Date.now(), data: {status: 'newDevice'}}));
+            arr.push(objectAssignDeep(obj, {data: {status: 'newDevice'}}));
         }
         this.updateBoard(obj);
         return arr;
@@ -140,7 +118,7 @@ export default class App extends Component {
         this.setState({
             stats: objectAssignDeep({}, this.state.stats, {
                 digging: obj.data.status === 'digging' ? this.state.stats.digging + 1 : this.state.stats.digging,
-                winner: obj.data.found === true && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
+                winner: obj.data.found && obj.eventName === "treasure" ? this.state.stats.winner + 1 : this.state.stats.winner,
                 captain: this.getValidUserCount()
             })
         });
@@ -152,8 +130,7 @@ export default class App extends Component {
 
     cargoHandler(count, delay) {
         this.cargo = asyncTimedCargo((tasks, callback) => {
-            this.fixUserBrokenDataTimer && clearTimeout(this.fixUserBrokenDataTimer);
-            const newState = tasks.length &&
+            const newState = size(tasks) &&
                 tasks.reduce((state, task) =>
                 task &&
                 task.deviceId &&
@@ -161,7 +138,6 @@ export default class App extends Component {
             this.setState({
                 markers: newState
             });
-            this.fixUserBrokenDataTimer = setTimeout(() => this.fixUserBrokenData(), 10000);
             return callback();
         }, count, delay);
     }
@@ -197,7 +173,7 @@ export default class App extends Component {
     }
 
     render() {
-        const props = Object.assign(Object.keys(this.state.center).length && {
+        const props = Object.assign(size(this.state.center) && {
                 center: this.state.center,
             });
         return (

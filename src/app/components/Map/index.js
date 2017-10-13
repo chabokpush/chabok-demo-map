@@ -3,6 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import * as animationData from '../../assets/animation/location.json'
 import Marker from '../../components/Marker'
 import Lottie from 'react-lottie';
+import _ from "lodash";
 import SkyLight from 'react-skylight';
 const API_KEY = 'AIzaSyCzNiw-oILSDrSZK8-O3tyya9mMqeDH0AE';
 
@@ -22,6 +23,22 @@ const CompanyLocation = () => (
         />
     </div>
 );
+
+
+const dialogStyle = {
+    width: '300px',
+    height: '400px',
+    position: 'fixed',
+    top: '50%',
+    left: '50%',
+    marginTop: '-200px',
+    marginLeft: '-150px',
+    backgroundColor: '#fff',
+    borderRadius: '4px',
+    zIndex: 100,
+    padding: '15px',
+    boxShadow: '0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28)'
+};
 
 export default class Map extends Component {
     static defaultProps = {
@@ -56,20 +73,7 @@ export default class Map extends Component {
         return (
             <div className="map">
                 <SkyLight
-                    dialogStyles={{
-                        width: '300px',
-                        height: '400px',
-                        position: 'fixed',
-                        top: '50%',
-                        left: '50%',
-                        marginTop: '-200px',
-                        marginLeft: '-150px',
-                        backgroundColor: '#fff',
-                        borderRadius: '4px',
-                        zIndex: 100,
-                        padding: '15px',
-                        boxShadow: '0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28)'
-                    }}
+                    dialogStyles={dialogStyle}
                     closeButtonStyle={{
                         display: 'none'
                     }}
@@ -96,6 +100,225 @@ export default class Map extends Component {
                         key: API_KEY,
                         language: 'fa',
                     }}
+                    yesIWantToUseGoogleMapApiInternals={true}
+                    options={{
+                        mapType: "roadmap",
+                        styles: [
+                            {
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#ebe3cd"
+                                    }
+                                ]
+                            },
+                            {
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#523735"
+                                    }
+                                ]
+                            },
+                            {
+                                "elementType": "labels.text.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#f5f1e6"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "administrative",
+                                "elementType": "geometry.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#c9b2a6"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "administrative.land_parcel",
+                                "elementType": "geometry.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#dcd2be"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "administrative.land_parcel",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#ae9e90"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "landscape.natural",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#dfd2ae"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#dfd2ae"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#93817c"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi.park",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#a5b076"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi.park",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#447530"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#f5f1e6"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.arterial",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#fdfcf8"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.highway",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#f8c967"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.highway",
+                                "elementType": "geometry.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#e9bc62"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.highway.controlled_access",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#e98d58"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.highway.controlled_access",
+                                "elementType": "geometry.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#db8555"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.local",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#806b63"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "transit.line",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#dfd2ae"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "transit.line",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#8f7d77"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "transit.line",
+                                "elementType": "labels.text.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#ebe3cd"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "transit.station",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "color": "#dfd2ae"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#b9d3c2"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#92998d"
+                                    }
+                                ]
+                            }
+                        ]
+                    }}
                     defaultCenter={center}
                     defaultZoom={zoom}
                 >
@@ -105,13 +328,14 @@ export default class Map extends Component {
                         lng={center.lng}
                     />
 
-                    {markers && markers.map((val, id) => (val.data.lat && val.data.lng && val.data.userInfo) && <Marker
+                    {markers && _.map(markers, (val, id) => (val.data.lat && val.data.lng && val.data.userInfo) &&
+                    <Marker
                         selectedUser={selectedUser}
                         key={val.deviceId}
                         lat={val.data.lat}
                         lng={val.data.lng}
                         receivedAt={val.data.receivedAt}
-                        createdAt={val.t}
+                        createdAt={val.createdAt}
                         status={val.data.status}
                         deviceId={val.deviceId}
                         eventName={val.eventName}

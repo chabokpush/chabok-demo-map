@@ -115,7 +115,15 @@ export default class App extends Component {
             arr.push(objectAssignDeep(obj, {data: {status: 'newDevice'}}));
         }
         this.updateBoard(obj);
-        return arr;
+        arr.sort((a, b) => {
+            return b.createdAt - a.createdAt;
+        });
+        const markerArray = arr.length > 50 ? this.shiftArray(arr, arr.length - 50) : arr;
+        return markerArray;
+    }
+
+    shiftArray(theArray, count) {
+        return theArray.splice(count, theArray.length);
     }
 
     updateBoard(obj) {

@@ -72,7 +72,7 @@ export default class Footer extends Component {
                             <h3 style={{margin: 0}}>{val.data.userInfo.name}</h3>
                             <TimeAgo
                                 style={{direction: 'rtl', display: 'inline-block'}}
-                                datetime={val.createdAt}
+                                datetime={val.receivedAt}
                                 locale='fa'/>
                         </div>
                     )}

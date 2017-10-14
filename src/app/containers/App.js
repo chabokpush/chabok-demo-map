@@ -51,6 +51,8 @@ export default class App extends Component {
     }
 
 
+
+
     chabok() {
         const push = this.push;
         push.on('registered', deviceId => console.log('DeviceId ', deviceId));
@@ -62,6 +64,9 @@ export default class App extends Component {
             this.setState({
                 chabok: 'Connected'
             });
+        });
+
+        push.once('connected',_=>{
             push.enableEventDelivery([
                 {
                     name: 'treasure',
@@ -79,32 +84,33 @@ export default class App extends Component {
                     name: 'newDevice',
                     live: false
                 }]);
-            push.on('geo', geoEvent => {
-                console.log('Geo Event ', geoEvent);
-                this.cargo.push(geoEvent);
-            });
-            push.on('treasure', treasureEvent => {
-                console.log('treasure ', treasureEvent);
-                this.cargo.push(treasureEvent);
-            });
-            push.on('captainStatus', status => {
-                console.log('captainStatus ', status);
-                this.cargo.push(status);
 
-            });
-            push.on('newDevice', devices => {
-                console.log('newDevice ', devices);
-                this.cargo.push(devices);
-            });
         });
-        push.on('message', msg => console.log('Message ', msg))
+        push.on('geo', geoEvent => {
+            console.log('Geo Event ', geoEvent);
+            this.cargo.push(geoEvent);
+        });
+        push.on('treasure', treasureEvent => {
+            console.log('treasure ', treasureEvent);
+            this.cargo.push(treasureEvent);
+        });
+        push.on('captainStatus', status => {
+            console.log('captainStatus ', status);
+            this.cargo.push(status);
 
+        });
+        push.on('newDevice', devices => {
+            console.log('newDevice ', devices);
+            this.cargo.push(devices);
+        });
+        push.on('message', msg => console.log('Message ', msg));
         let chabokId = Storage.get('chabokId');
         if (!chabokId) {
-            chabokId = btoa(Date.now());
+            chabokId = Date.now();
             Storage.set('chabokId', chabokId);
         }
         push.register(chabokId)
+
     }
 
     setMarkerState(obj) {

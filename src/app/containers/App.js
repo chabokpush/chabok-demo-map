@@ -25,6 +25,8 @@ export default class App extends Component {
             }
         };
         this.options = 'dev' in this.getQueryStringObject() ? config.DEVELOPMENT : config.PRODUCTION;
+
+
         this.push = new chabokpush.Chabok(this.options);
         this.chabok();
         this.cargoHandler(25, 500)
@@ -96,7 +98,13 @@ export default class App extends Component {
             });
         });
         push.on('message', msg => console.log('Message ', msg))
-        push.register('chabok-demo-map')
+
+        let chabokId = Storage.get('chabokId');
+        if (!chabokId) {
+            chabokId = btoa(Date.now());
+            Storage.set('chabokId', chabokId);
+        }
+        push.register(chabokId)
     }
 
     setMarkerState(obj) {

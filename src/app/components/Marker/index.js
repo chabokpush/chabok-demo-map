@@ -82,7 +82,7 @@ export default class Marker extends Component {
                     zIndex: receivedAt,
                     boxShadow: '0 0 4px rgba(0,0,0,0.2)'
                 }}>
-                {createdAt + 5000 > Date.now() && statusMotion}
+                {createdAt + 15000 > Date.now() && statusMotion}
                 <img
                     alt={deviceId}
                     src={require('../../assets/images/logo.svg')}/>

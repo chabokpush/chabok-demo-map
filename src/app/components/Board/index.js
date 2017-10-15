@@ -2,7 +2,7 @@ import React, {PureComponent} from 'react';
 
 export default class Header extends PureComponent {
     render() {
-        const {data, chabok} = this.props;
+        const {data, chabok, changeCenterPosition} = this.props;
         return (
 
             <div style={STYLE.board}>
@@ -10,11 +10,21 @@ export default class Header extends PureComponent {
                     position: 'absolute',
                     left: 10,
                     top: 5
-                }}>
+                }}
+                     onClick={() => changeCenterPosition({
+                         lat: 35.759172,
+                         lng: 51.400824,
+                         zoom: 14
+                     })}
+                >
                     <img src={require('../../assets/images/adp.png')} alt="" style={{height: 40}}/>
                 </div>
                 <ul className="inline-list stats">
-                    <li>
+                    <li  onClick={() => changeCenterPosition({
+                        lat: 35.759172,
+                        lng:20.400824,
+                        zoom: 14
+                    })}>
                         <img src={require('../../../logo.svg')} alt="" style={{height: 40}}/> چابک
                     </li>
                     <li className="invisible-mobile">

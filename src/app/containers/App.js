@@ -104,7 +104,6 @@ export default class App extends Component {
 
         });
         push.on('geo', geoEvent => {
-            this.fixUserBrokenData();
             debounce();
             console.log('Geo Event ', geoEvent);
             this.cargo.push(geoEvent);

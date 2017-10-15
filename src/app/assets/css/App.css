@@ -92,6 +92,7 @@ body {
       top: 15px; }
 
 .modal {
+  z-index: 999999999999999999999999999999999;
   position: absolute;
   top: -20px;
   left: 50%;
@@ -196,6 +197,48 @@ body {
       display: inline-block;
       transform: rotate(-25deg);
       animation: 1s waver infinite ease; }
+
+.treasure-modal {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  margin-left: 5px;
+  z-index: 99999999999999999999999999999999999999999; }
+  .treasure-modal .win-indicator {
+    background-color: #f9dd99;
+    text-align: center;
+    width: 150px;
+    border-radius: 10px 10px 10px 0;
+    padding: 5px;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    border: 1px solid #f1b421;
+    opacity: 0;
+    animation: 10S invisibleMotion ease-out;
+    animation-iteration-count: 1;
+    transform: translateY(0);
+    box-shadow: 0 0 5px #f1b421; }
+    .treasure-modal .win-indicator h1 {
+      direction: rtl;
+      text-align: center;
+      font-family: IRANSans;
+      font-size: 16px; }
+  .treasure-modal .lose-indicator {
+    background-color: #80b7ff;
+    text-align: center;
+    width: 70px;
+    border-radius: 10px 10px 10px 0;
+    padding: 5px;
+    display: inline-block;
+    margin: 0 auto;
+    position: relative;
+    font-size: 20px;
+    opacity: 0;
+    animation: 5S invisibleMotion ease-out;
+    animation-iteration-count: 1;
+    transform: translateY(0);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); }
 
 @media (max-width: 900px) {
   .invisible-mobile {

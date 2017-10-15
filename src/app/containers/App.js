@@ -71,7 +71,7 @@ export default class App extends Component {
 
     chabok() {
         const push = this.push;
-        const debounce = _.debounce(this.fixUserBrokenData.bind(this), 5000);
+        const debounce = _.debounce(this.fixUserBrokenData.bind(this), 10000);
         push.on('registered', deviceId => console.log('DeviceId ', deviceId));
         push.on('connecting', _ => console.log('Reconnecting'));
         push.on('disconnected', _ => console.log('offline'));

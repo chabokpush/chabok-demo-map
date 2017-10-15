@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import * as animationData from '../../assets/animation/treasure.json'
+import Lottie from 'react-lottie';
 const _ = require('string-to-color');
 
-const Typing = ({createdAt}) => (
-    <div className="modal" style={{zIndex: createdAt}}>
+const Typing = ({receivedAt}) => (
+    <div className="modal">
         <div className="typing-indicator">
             <span/>
             <span/>
@@ -11,9 +13,9 @@ const Typing = ({createdAt}) => (
     </div>
 );
 
-const Sent = ({createdAt}) => (
+const Sent = ({receivedAt}) => (
     <div className="modal">
-        <div className="sent-indicator" style={{zIndex: createdAt}}>
+        <div className="sent-indicator">
             <img
                 alt="sent"
                 src={require('../../assets/images/double-check.svg')}
@@ -23,9 +25,9 @@ const Sent = ({createdAt}) => (
     </div>
 );
 
-const Digging = ({createdAt}) => (
+const Digging = ({receivedAt}) => (
     <div className="modal">
-        <div className="dig-indicator" style={{zIndex: createdAt}}>
+        <div className="dig-indicator">
             <img
                 alt="digging"
                 src={require('../../assets/images/dig.svg')}
@@ -35,18 +37,26 @@ const Digging = ({createdAt}) => (
     </div>
 );
 
-const Winner = ({createdAt}) => (
-    <div className="modal">
-        <div className="indicator" style={{zIndex: createdAt}}>
-            برنده شدی
+const Winner = ({receivedAt,name}) => (
+    <div className="treasure-modal">
+        <div className="win-indicator">
+            <Lottie
+                options={{
+                    autoplay: true,
+                    animationData: animationData,
+                }}
+                height={70}
+                width={70}
+            />
+            <h1>{`${name} گنج رو پیدا کرد!`}</h1>
         </div>
     </div>
 );
 
-const Losser = ({createdAt}) => (
-    <div className="modal">
-        <div className="indicator" style={{zIndex: createdAt}}>
-            برنده شدی
+const Losser = ({receivedAt}) => (
+    <div className="treasure-modal">
+        <div className="lose-indicator">
+            ️☹️ ☹️
         </div>
     </div>
 );
@@ -55,21 +65,20 @@ const Losser = ({createdAt}) => (
 export default class Marker extends Component {
 
     userStatus() {
-        const {status, createdAt, eventName, isFound} = this.props;
+        const {status, receivedAt, eventName, isFound,userInfo} = this.props;
         if (eventName === "treasure") {
-            if (isFound) return <Sent key={createdAt} createdAt={createdAt}/>;
-            console.log(isFound)
-            return <Typing key={createdAt} createdAt={createdAt}/>
+            if (!isFound) return <Winner key={receivedAt} name={userInfo.name} createdAt={receivedAt}/>;
+            return <Losser key={receivedAt} createdAt={receivedAt}/>
         } else {
             switch (status) {
                 case 'typing':
-                    return <Typing key={createdAt} createdAt={createdAt}/>;
+                    return <Typing key={receivedAt} createdAt={receivedAt}/>;
                     break;
                 case 'sent':
-                    return <Sent key={createdAt} createdAt={createdAt}/>;
+                    return <Sent key={receivedAt} createdAt={receivedAt}/>;
                     break;
                 case 'digging':
-                    return <Digging key={createdAt} createdAt={createdAt}/>;
+                    return <Digging key={receivedAt} createdAt={receivedAt}/>;
                     break;
                 case null:
                     return null;
@@ -97,7 +106,7 @@ export default class Marker extends Component {
                     zIndex: receivedAt,
                     boxShadow: '0 0 4px rgba(0,0,0,0.2)'
                 }}>
-                {createdAt + 5000 > Date.now() && statusMotion}
+                {statusMotion}
                 <img
                     alt={deviceId}
                     src={require('../../assets/images/logo.svg')}/>

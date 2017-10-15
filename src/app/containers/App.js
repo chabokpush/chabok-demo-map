@@ -11,12 +11,17 @@ import _ from "lodash";
 const objectAssignDeep = require(`../helper/objectAssignDeep`);
 const asyncTimedCargo = require('async-timed-cargo');
 
+
 export default class App extends Component {
     constructor() {
         super();
         this.state = {
             markers: [],
-            center: {},
+            center: {
+                lat: 35.759172,
+                lng: 51.400824
+            },
+            zoom: 18,
             chabok: 'offline',
             stats: {
                 digging: 0,
@@ -215,21 +220,22 @@ export default class App extends Component {
         }, 2000)
     }
 
-    getCenterPosition(){
-
+    getCenterPosition(pos) {
+        this.setState({
+            center: {lat: pos.lat, lng: pos.lng},
+            zoom: pos.zoom
+        });
     }
 
     render() {
-        const props = Object.assign(size(this.state.center) && {
-                center: this.state.center,
-            });
         return (
             <div className="App">
                 <Board data={this.state.stats}
                        chabok={this.state.chabok}
                        changeCenterPosition={this.getCenterPosition.bind(this)}/>
                 <Map markers={this.state.markers}
-                     {...props}
+                     center={this.state.center}
+                     zoom={this.state.zoom}
                      selectedUser={this.state.selectedUser}/>
                 <Footer data={this.state.markers} selectedUser={this.selectedUser.bind(this)}/>
             </div>

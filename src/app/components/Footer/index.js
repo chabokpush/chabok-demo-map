@@ -61,7 +61,7 @@ export default class Footer extends PureComponent {
                             <h3 style={{margin: 0}}>{val.data.userInfo.name}</h3>
                             <TimeAgo
                                 style={{direction: 'rtl', display: 'inline-block'}}
-                                datetime={val.createdAt}
+                                datetime={val.createdAt || Date.now()}
                                 locale='fa'/>
                         </div>
                     )}

@@ -14,16 +14,16 @@ export default class Header extends PureComponent {
                      onClick={() => changeCenterPosition({
                          lat: 35.759172,
                          lng: 51.400824,
-                         zoom: 14
+                         zoom: 20
                      })}
                 >
                     <img src={require('../../assets/images/adp.png')} alt="" style={{height: 40}}/>
                 </div>
                 <ul className="inline-list stats">
                     <li  onClick={() => changeCenterPosition({
-                        lat: 35.759172,
-                        lng:20.400824,
-                        zoom: 14
+                        lat: 35.790987,
+                        lng:51.405697,
+                        zoom: 17
                     })}>
                         <img src={require('../../../logo.svg')} alt="" style={{height: 40}}/> چابک
                     </li>

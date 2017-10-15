@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import GoogleMapReact from 'google-map-react';
 import * as animationData from '../../assets/animation/location.json'
 import Marker from '../../components/Marker'
@@ -40,21 +40,22 @@ const dialogStyle = {
     boxShadow: '0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28)'
 };
 
-export default class Map extends Component {
-    static defaultProps = {
-        center: {
-            lat: 35.759172,
-            lng: 51.400824
-        },
-        zoom: 17
-    };
-
+export default class Map extends PureComponent {
     constructor() {
         super();
         this.state = {
             modalState: {}
         }
     }
+
+    static defaultProps = {
+        defaultCenter: {
+            lat: 35.759172,
+            lng: 51.400824
+        },
+        defaultZoom:17
+    }
+
 
     showModal(val) {
         this.refs.modal.show();
@@ -68,7 +69,7 @@ export default class Map extends Component {
     }
 
     render() {
-        const {markers, zoom, center, selectedUser} = this.props;
+        const {markers, zoom, center, selectedUser,defaultCenter,defaultZoom} = this.props;
         const {modalState} = this.state;
         return (
             <div className="map">
@@ -319,8 +320,10 @@ export default class Map extends Component {
                             }
                         ]
                     }}
-                    defaultCenter={center}
-                    defaultZoom={zoom}
+                    defaultCenter={defaultCenter}
+                    center={center || defaultCenter}
+                    defaultZoom={defaultZoom}
+                    zoom={zoom || defaultZoom}
                 >
                     <CompanyLocation
                         key={'company'}

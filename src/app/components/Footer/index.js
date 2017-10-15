@@ -57,7 +57,7 @@ export default class Footer extends Component {
             swipe: true,
             touchMove: true
         };
-        const user = data && data.sort((a, b) => b.receivedAt - a.receivedAt);
+        const user = data && data.sort((a, b) => b.createdAt - a.createdAt);
         return (
             <div className="footer">
                 <Slider {...settings} className="slider">
@@ -72,7 +72,7 @@ export default class Footer extends Component {
                             <h3 style={{margin: 0}}>{val.data.userInfo.name}</h3>
                             <TimeAgo
                                 style={{direction: 'rtl', display: 'inline-block'}}
-                                datetime={val.receivedAt}
+                                datetime={val.createdAt}
                                 locale='fa'/>
                         </div>
                     )}

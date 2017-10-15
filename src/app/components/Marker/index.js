@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import * as animationData from '../../assets/animation/treasure.json'
 import Lottie from 'react-lottie';
 const _ = require('string-to-color');
@@ -62,7 +62,7 @@ const Losser = ({receivedAt}) => (
 );
 
 
-export default class Marker extends Component {
+export default class Marker extends PureComponent {
 
     userStatus() {
         const {status, receivedAt, eventName, isFound,userInfo} = this.props;

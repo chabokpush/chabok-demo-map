@@ -216,13 +216,19 @@ export default class App extends Component {
         }, 2000)
     }
 
+    getCenterPosition(){
+
+    }
+
     render() {
         const props = Object.assign(size(this.state.center) && {
                 center: this.state.center,
             });
         return (
             <div className="App">
-                <Board data={this.state.stats} chabok={this.state.chabok}/>
+                <Board data={this.state.stats}
+                       chabok={this.state.chabok}
+                       changeCenterPosition={this.getCenterPosition.bind(this)}/>
                 <Map markers={this.state.markers}
                      {...props}
                      selectedUser={this.state.selectedUser}/>

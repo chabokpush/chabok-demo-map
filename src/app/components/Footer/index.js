@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Slider from 'react-slick';
 import TimeAgo from 'timeago-react';
 
-export default class Footer extends Component {
+export default class Footer extends PureComponent {
 
     shouldComponentUpdate(nextProps, nextState) {
         if (this.props.data !== nextProps.data) {

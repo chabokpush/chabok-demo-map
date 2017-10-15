@@ -55,15 +55,6 @@ export default class Marker extends Component {
         }
     }
 
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.createdAt + 10000 > Date.now()) {
-            return true;
-        }
-        return false;
-    }
-
-
     render() {
         const {deviceId, showModal, receivedAt, createdAt, status, selectedUser} = this.props;
         const statusMotion = this.userStatus();

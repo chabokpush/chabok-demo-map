@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
 
 export default class Header extends Component {
-    shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.data !== nextProps.data) {
-            return true;
-        }
-        return this.props.chabok !== nextProps.chabok;
-
-
-    }
 
     render() {
         const {data, chabok} = this.props;

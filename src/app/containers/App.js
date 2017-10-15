@@ -7,7 +7,7 @@ import Storage from '../helper/Storage';
 import {size} from '../helper/Size';
 import config from '../config/chabok.json';
 import queryString from 'query-string';
-import _ from "lodash/collection";
+import _ from "lodash";
 const objectAssignDeep = require(`../helper/objectAssignDeep`);
 const asyncTimedCargo = require('async-timed-cargo');
 
@@ -51,6 +51,22 @@ export default class App extends Component {
     }
 
 
+    fixUserBrokenData() {
+        const getUnregisteredUser = this.getUnregisteredUser();
+        const unregisteredUser = getUnregisteredUser
+            .map(user => user && user.deviceId)
+            .filter(user => !!user);
+        unregisteredUser.length && this.push.getInstallations(unregisteredUser)
+            .then(items => {
+                getUnregisteredUser && getUnregisteredUser.map(user => {
+                    items &&
+                    items
+                        .map(item => {
+                            (user && user.deviceId === item.id) && this.cargo.push(objectAssignDeep(user, {data: item}))
+                        })
+                });
+            });
+    }
 
 
     chabok() {
@@ -66,7 +82,7 @@ export default class App extends Component {
             });
         });
 
-        push.once('connected',_=>{
+        push.once('connected', _ => {
             push.enableEventDelivery([
                 {
                     name: 'treasure',
@@ -87,14 +103,17 @@ export default class App extends Component {
 
         });
         push.on('geo', geoEvent => {
+            _.debounce(this.fixUserBrokenData, 2000);
             console.log('Geo Event ', geoEvent);
             this.cargo.push(geoEvent);
         });
         push.on('treasure', treasureEvent => {
+            _.debounce(this.fixUserBrokenData, 2000);
             console.log('treasure ', treasureEvent);
             this.cargo.push(treasureEvent);
         });
         push.on('captainStatus', status => {
+            _.debounce(this.fixUserBrokenData, 2000);
             console.log('captainStatus ', status);
             this.cargo.push(status);
 

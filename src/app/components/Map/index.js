@@ -334,6 +334,7 @@ export default class Map extends Component {
                         key={val.deviceId}
                         lat={val.data.lat}
                         lng={val.data.lng}
+                        isFound={val.data.found || false}
                         receivedAt={val.data.receivedAt}
                         createdAt={val.createdAt}
                         status={val.data.status}

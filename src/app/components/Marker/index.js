@@ -35,23 +35,47 @@ const Digging = ({createdAt}) => (
     </div>
 );
 
+const Winner = ({createdAt}) => (
+    <div className="modal">
+        <div className="indicator" style={{zIndex: createdAt}}>
+            برنده شدی
+        </div>
+    </div>
+);
+
+const Losser = ({createdAt}) => (
+    <div className="modal">
+        <div className="indicator" style={{zIndex: createdAt}}>
+            برنده شدی
+        </div>
+    </div>
+);
+
 
 export default class Marker extends Component {
 
     userStatus() {
-        const {status, createdAt} = this.props;
-        switch (status) {
-            case 'typing':
-                return <Typing key={createdAt} createdAt={createdAt}/>;
-                break;
-            case 'sent':
-                return <Sent key={createdAt} createdAt={createdAt}/>;
-                break;
-            case 'digging':
-                return <Digging key={createdAt} createdAt={createdAt}/>;
-                break;
-            default:
-                return null;
+        const {status, createdAt, eventName, isFound} = this.props;
+        if (eventName === "treasure") {
+            if (isFound) return <Sent key={createdAt} createdAt={createdAt}/>;
+            console.log(isFound)
+            return <Typing key={createdAt} createdAt={createdAt}/>
+        } else {
+            switch (status) {
+                case 'typing':
+                    return <Typing key={createdAt} createdAt={createdAt}/>;
+                    break;
+                case 'sent':
+                    return <Sent key={createdAt} createdAt={createdAt}/>;
+                    break;
+                case 'digging':
+                    return <Digging key={createdAt} createdAt={createdAt}/>;
+                    break;
+                case null:
+                    return null;
+                default:
+                    return null;
+            }
         }
     }
 
@@ -73,7 +97,7 @@ export default class Marker extends Component {
                     zIndex: receivedAt,
                     boxShadow: '0 0 4px rgba(0,0,0,0.2)'
                 }}>
-                {createdAt + 15000 > Date.now() && statusMotion}
+                {createdAt + 5000 > Date.now() && statusMotion}
                 <img
                     alt={deviceId}
                     src={require('../../assets/images/logo.svg')}/>

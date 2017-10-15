@@ -67,7 +67,7 @@ export default class Marker extends Component {
     userStatus() {
         const {status, receivedAt, eventName, isFound,userInfo} = this.props;
         if (eventName === "treasure") {
-            if (!isFound) return <Winner key={receivedAt} name={userInfo.name} createdAt={receivedAt}/>;
+            if (isFound) return <Winner key={receivedAt} name={userInfo.name} createdAt={receivedAt}/>;
             return <Losser key={receivedAt} createdAt={receivedAt}/>
         } else {
             switch (status) {

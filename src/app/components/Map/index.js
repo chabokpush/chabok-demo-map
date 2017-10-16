@@ -53,7 +53,7 @@ export default class Map extends PureComponent {
             lat: 35.759172,
             lng: 51.400824
         },
-        defaultZoom:17
+        defaultZoom: 17
     }
 
 
@@ -68,8 +68,10 @@ export default class Map extends PureComponent {
         this.refs.modal.hide();
     }
 
+    maskPhoneNumber = (val) => `${val.slice(0, 4)}xxxx${val.slice(8, 12)}`;
+
     render() {
-        const {markers, zoom, center, selectedUser,defaultCenter,defaultZoom} = this.props;
+        const {markers, zoom, center, selectedUser, defaultCenter, defaultZoom} = this.props;
         const {modalState} = this.state;
         return (
             <div className="map">
@@ -85,7 +87,7 @@ export default class Map extends PureComponent {
                             alt="user"
                             src={require(`../../assets/images/user/user-${modalState.data && modalState.data.userInfo ? modalState.data.userInfo.avatarIdx : 0}.png`)}/>
                         <h1>{modalState.data && modalState.data.userInfo && modalState.data.userInfo.name}</h1>
-                        <h2>{modalState.data && modalState.data.userId}</h2>
+                        <h2>{modalState.data && this.maskPhoneNumber(modalState.data.userId)}</h2>
                         <h3>{modalState.data && modalState.data.deviceModel}</h3>
                         <button style={{
                             padding: '5px 10px',

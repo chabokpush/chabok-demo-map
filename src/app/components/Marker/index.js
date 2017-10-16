@@ -56,7 +56,7 @@ const Winner = ({receivedAt,name}) => (
 const Losser = ({receivedAt}) => (
     <div className="treasure-modal">
         <div className="lose-indicator">
-            <img src={require('../../assets/images/sad.svg')}  width={15} /> <img src={require('../../assets/images/sad.svg')}  width={15} />
+            <img src={require('../../assets/images/sad.svg')}  width={20} />
         </div>
     </div>
 );

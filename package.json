@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "async-timed-cargo": "^0.0.3",
-    "chabokpush": "^0.1.6",
+    "chabokpush": "^0.4.2",
     "debounce": "^1.0.2",
     "flow-bin": "^0.55.0",
     "google-map-react": "^0.24.0",

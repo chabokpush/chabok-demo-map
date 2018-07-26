@@ -25,7 +25,7 @@ export default class Header extends PureComponent {
                         lng:51.405697,
                         zoom: 17
                     })}>
-                        <img src={require('../../../logo.svg')} alt="" style={{height: 40}}/> چابک
+                        <img src={require('../../../logo.svg')} alt="" style={{height: 40}}/>
                     </li>
                     <li className="invisible-mobile">
                         <img src={require('../../assets/images/captain.svg')} alt=""/>
